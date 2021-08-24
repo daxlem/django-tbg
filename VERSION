@@ -1,0 +1,9 @@
+CINEMA APP - PYTHON/DJANGO
+
+Esta version del proyecto contiene las siguientes caracteristicas.
+- Interfaz de acceso a las funciones de Home, Upload Data y Reports.
+- Funcion para subir archivos desde una carpeta (todos los archivos) y almacenarlos en un directorio.
+- Multiple seleccion de archivos a subir.
+- Gestion de archivos (descargar, borrar y borrar todos los archivos)
+- Funcion de mensajes luego de subir o borrar archivos.
+- Manejo de librerias pandas para archivos csv.
