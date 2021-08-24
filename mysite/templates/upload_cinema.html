@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+  <script src="/static/upload.js"></script>
+  <h2>Upload Data Files</h2>
+  
+  <form method="post" name="filesupload" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form|crispy }}
+  <button type="submit" style="margin-right:15px;" class="btn btn-primary">Upload Files</button>
+  <p></p><p></p>
+  </form>
+
+{% endblock %}

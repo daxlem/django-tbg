@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+  {% block content_header %}
+    <h2>Cinemas CSV</h2>
+    <p></p><p></p>
+    <p>
+      <a href="{% url 'upload_cinema' %}" class="btn btn-primary">Upload Files</a>
+    </p>
+  {% endblock %}
+
+  <p></p>
+  <table class="table mb-0">
+    <thead>
+      <tr>
+        <th>File</th>
+        <th>Download</th>
+        <th>Delete</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for cinema in cinemas %}
+        <tr>
+          <td>{{cinema.csv}}</td>
+          <td>
+            <a href="{{ cinema.csv.url }}" class="btn btn-primary btn-sm" target="_blank">
+              Download
+            </a>
+          </td>
+          <td>
+            <form method="post" action="{% url 'delete_cinema' cinema.pk %}">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+            </form>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+  {% block content_header %}
+    <h2>Cinema Reports</h2>
+    <p></p>
+    <form method="post" action="{% url 'read_cinema_all'%}">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-primary">Process Info</button>
+    </form>
+  {% endblock %}
+
+  <p></p>
+
+  {{table|safe}}
+
+{% endblock %}
