@@ -27,6 +27,7 @@ def upload_cinema(request):
     return render(request, 'upload_cinema.html', {'form': form})
 
 def read_cinema_all(request):
+    df_list = []
     path = './media/cinemas/csv/'
     files = [f for f in os.listdir(path) if isfile(join(path, f))]
     for f in files:
@@ -34,12 +35,16 @@ def read_cinema_all(request):
         read_file = pd.read_excel (file_path)
         read_file.to_csv ("Data.csv", index = None)
         df_title = pd.DataFrame(pd.read_csv("Data.csv"))
-        df = pd.DataFrame(pd.read_csv("Data.csv", header=2))
         df_title = df_title.iloc[0][0]
-        print(df)
-        print(df_title)
-        dfprint = df.to_html(classes='table mb-0', index=False)
-    return render(request, 'reports.html', {'table': dfprint})
+        country = df_title.split(',')[0]
+        week = df_title.split(',')[2]
+        week = week.replace('Week of ','')
+        df = pd.DataFrame(pd.read_csv("Data.csv", header=2)).assign(Country=country, Week=week)
+        delete_columns = (0,2,3,6,7,8,9,10,11,12,13,14,16,17,18,19,20,21,22,24,25,26,27,28,29,30,30,31,32,33,35,36,37,38,39,40,41,43,44,45)
+        df_clean = df.drop(df.columns[[delete_columns]], axis = 1, inplace = False)
+        df_list.append(df_clean)
+    df_clean = df_clean.to_html(classes='table mb-0', index=False)
+    return render(request, 'reports.html', {'table': df_clean})
 
 def cinema_list(request):
     cinemas = Cinema.objects.all()
