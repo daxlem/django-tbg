@@ -31,16 +31,14 @@ def read_cinema_all(request):
     files = [f for f in os.listdir(path) if isfile(join(path, f))]
     for f in files:
         file_path = path+f
-        read_file = pd.read_excel(file_path)
-        read_file.to_csv("Test.csv", index = None, header=1)
-        df = pd.DataFrame(pd.read_csv("Test.csv"))
-        df.columns = df.iloc[1]
-        df_title = df.iloc[0][0]
-        dfprint = df.drop(df.index[[0,1]])
-        dfprint.columns = df.iloc[1]
-        print(df.columns)
-        print(dfprint.columns) 
-        dfprint = dfprint.to_html(classes='table mb-0', index=False)
+        read_file = pd.read_excel (file_path)
+        read_file.to_csv ("Data.csv", index = None)
+        df_title = pd.DataFrame(pd.read_csv("Data.csv"))
+        df = pd.DataFrame(pd.read_csv("Data.csv", header=2))
+        df_title = df_title.iloc[0][0]
+        print(df)
+        print(df_title)
+        dfprint = df.to_html(classes='table mb-0', index=False)
     return render(request, 'reports.html', {'table': dfprint})
 
 def cinema_list(request):
