@@ -7,3 +7,6 @@ Esta version del proyecto contiene las siguientes caracteristicas.
 - Gestion de archivos (descargar, borrar y borrar todos los archivos)
 - Funcion de mensajes luego de subir o borrar archivos.
 - Manejo de librerias pandas para archivos csv.
+- Creación de DataFrame de los archivos subidos.
+- Creación de un DataModel para almacenar el DataFrame en la base de datos.
+- Data con formato de acuerdo al tipo que pertenece.
