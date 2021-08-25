@@ -18,8 +18,8 @@ class DataCinema(models.Model):
     circuit = models.CharField(max_length=100),
     weekend_adm = models.IntegerField(),
     week_adm = models.IntegerField(),
-    weekend_gross = models.DecimalField(max_digits=10, decimal_places=2),
-    week_gross = models.DecimalField(max_digits=10, decimal_places=2),
+    weekend_gross = models.DecimalField(max_digits=10, decimal_places=6),
+    week_gross = models.DecimalField(max_digits=10, decimal_places=6),
     country = models.CharField(max_length=100),
     week_from = models.DateField(),
     week_to = models.DateField()
