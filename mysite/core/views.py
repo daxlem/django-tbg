@@ -4,12 +4,14 @@ from django.core.files.storage import FileSystemStorage
 from django.urls import reverse_lazy
 from django.contrib import messages
 from os.path import isfile, join
+from sqlalchemy import create_engine
 import pandas as pd
 import os
 import warnings
 
 from .forms import CinemaForm
 from .models import Cinema
+from .models import DataCinema
 
 class Home(TemplateView):
     template_name = 'home.html'
@@ -30,11 +32,13 @@ def upload_cinema(request):
 def read_cinema_all(request):
     df_list = []
     dfGeneral = pd.DataFrame()
+    dfDatabase = pd.DataFrame()
+    engine = create_engine('sqlite:///tbgdb.sqlite3')
     path = './media/cinemas/csv/'
     files = [f for f in os.listdir(path) if isfile(join(path, f))]
     
     if len(files) > 0:
-        for f in files:
+        for f in files:            
             file_path = path+f
             read_file = pd.read_excel (file_path)
             read_file.to_csv ("Data.csv", index = None)
@@ -70,10 +74,14 @@ def read_cinema_all(request):
             df_clean['WeekTo'] = df_clean['WeekTo'].dt.strftime('%d/%m/%Y')
             pd.options.display.float_format = "{:,.2f}".format
             pd.set_option("colheader_justify", "center")
-            df_list.append(df_clean)        
+            df_list.append(df_clean)
         dfGeneral = pd.concat(df_list)
     else:
         messages.error(request, "No Files Updloaded")
+
+    if not dfGeneral.empty:
+        dfDatabase = dfGeneral
+        dfDatabase.to_sql(DataCinema._meta.db_table, if_exists='replace', con=engine, index=False)
 
     df_clean = dfGeneral.to_html(classes='table table-hover', index=False)
     return render(request, 'reports.html', {'table': df_clean})
@@ -85,20 +93,25 @@ def cinema_list(request):
     })
 
 def delete_cinema(request, pk):
+    engine = create_engine('sqlite:///tbgdb.sqlite3')
     if request.method == 'POST':
         cinema = Cinema.objects.get(pk=pk)
         cinema.delete()
         messages.success(request, "File Deleted")
+        engine.execute('DROP TABLE IF EXISTS core_datacinema;') 
+        read_cinema_all(request)
     return redirect('class_cinema_list')
 
 def delete_cinema_all(request):
+    engine = create_engine('sqlite:///tbgdb.sqlite3')
     if request.method == 'POST':
         files = Cinema.objects.all()
         for f in files:
             pk = f.pk
             cinema = Cinema.objects.get(pk=pk)
             cinema.delete()
-        messages.success(request, "All Files Deleted")    
+        messages.success(request, "All Files Deleted")
+        engine.execute('DROP TABLE IF EXISTS core_datacinema;')   
     return redirect('class_cinema_list')
 
 class CinemaListView(ListView):

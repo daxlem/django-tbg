@@ -12,6 +12,8 @@ class Cinema(models.Model):
         super().delete(*args, **kwargs)
 
 class DataCinema(models.Model):
+    class Meta:
+        db_table = 'core_data'
     nid = models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID'),
     title = models.CharField(max_length=100),
     theatre_name = models.CharField(max_length=100),
