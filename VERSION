@@ -10,3 +10,5 @@ Esta version del proyecto contiene las siguientes caracteristicas.
 - Creación de DataFrame de los archivos subidos.
 - Creación de un DataModel para almacenar el DataFrame en la base de datos.
 - Data con formato de acuerdo al tipo que pertenece.
+- Dataframe to Database Table.
+- Insert/Delete de Dataframes en la base de datos.
