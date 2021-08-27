@@ -26,7 +26,8 @@ def upload_cinema(request):
     for f in files:
         form = CinemaForm(request.POST, request.FILES)
         file_csv = Cinema(csv=f)
-        file_csv.save()    
+        file_csv.save()
+    read_cinema_all(request)
     return render(request, 'upload_cinema.html', {'form': form})
 
 def read_cinema_all(request):
@@ -57,21 +58,28 @@ def read_cinema_all(request):
                 date_from = week.split(' to ')[0]
                 year = int(year) - 1
                 date_from = date_from.split(' ')[1]+'/'+ str(year)
-            df = pd.DataFrame(pd.read_csv("Data.csv", header=2)).assign(Country=country, WeekFrom=date_from, WeekTo=date_to)
+            df = pd.DataFrame(pd.read_csv("Data.csv", header=2)).assign(country=country, week_from=date_from, week_to=date_to)
+            column_names = df.columns
+            column_names = column_names.str.replace('$','dollar')
+            column_names = column_names.str.lower()
+            column_names = column_names.str.replace(' ','_')
+            column_names = column_names.str.replace('\n','_')
+            column_names = column_names.str.replace('_dollar','')
             delete_columns = (0,2,3,6,7,8,9,10,11,12,13,14,16,17,18,19,20,21,22,24,25,26,27,28,29,30,30,31,32,33,35,36,37,38,39,40,41,43,44,45)
+            df.columns = column_names
             df_clean = df.drop(df.columns[[delete_columns]], axis = 1, inplace = False)
-            df_clean['Title'] = df_clean['Title'].astype(str)
-            df_clean['Theatre Name'] = df_clean['Theatre Name'].astype(str)
-            df_clean['Circuit'] = df_clean['Circuit'].astype(str)
-            df_clean['Weekend\nAdm'] = df_clean['Weekend\nAdm'].astype(int)
-            df_clean['Week\nAdm'] = df_clean['Week\nAdm'].astype(int)
-            df_clean['Weekend\nGross $'] = df_clean['Weekend\nGross $'].astype(float)
-            df_clean['Week\nGross $'] = df_clean['Week\nGross $'].astype(float)
-            df_clean['Country'] = df_clean['Country'].astype(str)
-            df_clean['WeekFrom'] = pd.to_datetime(df_clean['WeekFrom'])
-            df_clean['WeekFrom'] = df_clean['WeekFrom'].dt.strftime('%d/%m/%Y')
-            df_clean['WeekTo'] = pd.to_datetime(df_clean['WeekTo'])
-            df_clean['WeekTo'] = df_clean['WeekTo'].dt.strftime('%d/%m/%Y')
+            df_clean['title'] = df_clean['title'].astype(str)
+            df_clean['theatre_name'] = df_clean['theatre_name'].astype(str)
+            df_clean['circuit'] = df_clean['circuit'].astype(str)
+            df_clean['weekend_adm'] = df_clean['weekend_adm'].astype(int)
+            df_clean['week_adm'] = df_clean['week_adm'].astype(int)
+            df_clean['weekend_gross'] = df_clean['weekend_gross'].astype(float)
+            df_clean['week_gross'] = df_clean['week_gross'].astype(float)
+            df_clean['country'] = df_clean['country'].astype(str)
+            df_clean['week_from'] = pd.to_datetime(df_clean['week_from'])
+            df_clean['week_from'] = df_clean['week_from'].dt.strftime('%d/%m/%Y')
+            df_clean['week_to'] = pd.to_datetime(df_clean['week_to'])
+            df_clean['week_to'] = df_clean['week_to'].dt.strftime('%d/%m/%Y')
             pd.options.display.float_format = "{:,.2f}".format
             pd.set_option("colheader_justify", "center")
             df_list.append(df_clean)
@@ -98,7 +106,7 @@ def delete_cinema(request, pk):
         cinema = Cinema.objects.get(pk=pk)
         cinema.delete()
         messages.success(request, "File Deleted")
-        engine.execute('DROP TABLE IF EXISTS core_datacinema;') 
+        engine.execute('DROP TABLE IF EXISTS core_data;') 
         read_cinema_all(request)
     return redirect('class_cinema_list')
 
@@ -111,7 +119,7 @@ def delete_cinema_all(request):
             cinema = Cinema.objects.get(pk=pk)
             cinema.delete()
         messages.success(request, "All Files Deleted")
-        engine.execute('DROP TABLE IF EXISTS core_datacinema;')   
+        engine.execute('DROP TABLE IF EXISTS core_data;')   
     return redirect('class_cinema_list')
 
 class CinemaListView(ListView):
