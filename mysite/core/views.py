@@ -37,7 +37,7 @@ def read_cinema_all(request):
     engine = create_engine('sqlite:///tbgdb.sqlite3')
     path = './media/cinemas/csv/'
     files = [f for f in os.listdir(path) if isfile(join(path, f))]
-    
+
     if len(files) > 0:
         for f in files:            
             file_path = path+f
@@ -85,13 +85,75 @@ def read_cinema_all(request):
             df_list.append(df_clean)
         dfGeneral = pd.concat(df_list)
     else:
-        messages.error(request, "No Files Updloaded")
+        messages.error(request, "No Files Uploaded")
 
     if not dfGeneral.empty:
         dfDatabase = dfGeneral
         dfDatabase.to_sql(DataCinema._meta.db_table, if_exists='replace', con=engine, index=False)
 
-    df_clean = dfGeneral.to_html(classes='table table-hover', index=False)
+    df_clean = dfGeneral.to_html(classes='table table-striped', index=False)
+    return print('DataFrames Loaded')
+
+def generate_report(request):
+    dfGeneral = pd.DataFrame()
+    df_clean = pd.DataFrame()
+    path = './media/cinemas/csv/'
+    files = [f for f in os.listdir(path) if isfile(join(path, f))]
+
+    if len(files) > 0:
+        if request.method == 'POST':
+            data = []
+            engine = create_engine('sqlite:///tbgdb.sqlite3')
+            to_date = request.POST['to_date']
+            from_date = request.POST['from_date']
+            country = request.POST['country']
+            report = request.POST['report']
+
+            if not (to_date and from_date) == "":
+                if (report == "Admissions by Country"):
+                    Result = pd.read_sql_query('SELECT cd.country AS country, SUM(cd.week_adm) AS week_adm FROM core_data cd GROUP BY cd.country union all SELECT "Total", SUM(cd.week_adm) FROM core_data cd;', engine)
+                    headers = ["Country", "Total Admissions"]
+                    dfGeneral = pd.DataFrame(Result)
+                    dfGeneral.columns = headers
+                    dfGeneral['Total Admissions'] = dfGeneral['Total Admissions'].astype(int)
+                    dfGeneral['Total Admissions'] = dfGeneral.apply(lambda x: "{:,}".format(x['Total Admissions']), axis=1)              
+                    
+                if (report == "Admissions by Country and Circuit"):
+                    result = engine.execute('SELECT cd.country AS country, SUM(cd.week_adm) AS week_adm FROM core_data cd GROUP BY cd.country;')
+                    for row in result:
+                        data.append(row)
+                    result.close()
+                    headers = ["Country", "Total Admissions"]
+
+                if (report == "Top 5 Movies General"):
+                    result = engine.execute('SELECT cd.country AS country, SUM(cd.week_adm) AS week_adm FROM core_data cd GROUP BY cd.country;')
+                    for row in result:
+                        data.append(row)
+                    result.close()
+                    headers = ["Country", "Total Admissions"]
+
+                if (report == "Top 5 Movies By Country"):
+                    result = engine.execute('SELECT cd.country AS country, SUM(cd.week_adm) AS week_adm FROM core_data cd GROUP BY cd.country;')
+                    for row in result:
+                        data.append(row)
+                    result.close()
+                    headers = ["Country", "Total Admissions"]
+            else:
+                messages.error(request, "Date Fields Required")
+        table_title = 'text-center">'+'\n<h5 style="margin-bottom: 20px;">Report: '
+        table_title = table_title + report
+        table_title = table_title + '</h5>'
+
+        df_clean = dfGeneral.to_html(classes='table table-striped table-bordered text-center', justify='center', index=False)
+        df_clean = df_clean.replace('<thead>','<thead class="thead-dark">')
+        df_clean = df_clean.replace('<tr style="text-align: center;">','<tr class="thead-dark" style="text-align: center;">')
+        df_clean = df_clean.replace('<th>','<th scope="col">')
+        df_clean = df_clean.replace('<td>Total</td>\n      <td>','<td bgcolor= "black" style="color:white;">Total</td>\n      <td bgcolor= "black" style="color:white;">')
+        df_clean = df_clean.replace('text-center">',table_title) 
+    else:
+        messages.error(request, "No Files Uploaded")
+        df_clean = dfGeneral.to_html(classes='table table-striped table-bordered text-center', justify='center', index=False)
+
     return render(request, 'reports.html', {'table': df_clean})
 
 def cinema_list(request):
@@ -111,15 +173,21 @@ def delete_cinema(request, pk):
     return redirect('class_cinema_list')
 
 def delete_cinema_all(request):
-    engine = create_engine('sqlite:///tbgdb.sqlite3')
-    if request.method == 'POST':
-        files = Cinema.objects.all()
-        for f in files:
-            pk = f.pk
-            cinema = Cinema.objects.get(pk=pk)
-            cinema.delete()
+    path = './media/cinemas/csv/'
+    files = [f for f in os.listdir(path) if isfile(join(path, f))]
+
+    if len(files) > 0:
+        engine = create_engine('sqlite:///tbgdb.sqlite3')
+        if request.method == 'POST':
+            files = Cinema.objects.all()
+            for f in files:
+                pk = f.pk
+                cinema = Cinema.objects.get(pk=pk)
+                cinema.delete()
         messages.success(request, "All Files Deleted")
-        engine.execute('DROP TABLE IF EXISTS core_data;')   
+        engine.execute('DROP TABLE IF EXISTS core_data;')
+    else:
+        messages.error(request, "No Files Uploaded")   
     return redirect('class_cinema_list')
 
 class CinemaListView(ListView):

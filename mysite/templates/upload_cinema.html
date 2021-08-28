@@ -3,14 +3,12 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-  <h2>Upload Data Files</h2>
-  
-  <form method="post" name="filesupload" enctype="multipart/form-data">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script> 
+  <form method="post" name="filesupload" style="margin:20px" enctype="multipart/form-data">
+    <h2 style="margin-bottom: 15px">Upload Data</h2>
     {% csrf_token %}
-    {{ form|crispy }}
-  <button type="submit" style="margin-right:15px;" class="btn btn-primary">Upload Files</button>
-  <p></p><p></p>
+    {{ form|crispy }}  
+  <button type="submit" style="margin-bottom:10px;" class="btn btn-primary">Upload Files</button>
   </form>
 
 {% endblock %}

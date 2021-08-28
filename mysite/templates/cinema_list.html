@@ -10,32 +10,36 @@
     </p>
   {% endblock %}
 
-  <p></p>
-  <table class="table mb-0">
-    <thead>
-      <tr>
-        <th>File</th>
-        <th>Download</th>
-        <th>Delete</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for cinema in cinemas %}
-        <tr>
-          <td>{{cinema.csv}}</td>
-          <td>
-            <a href="{{ cinema.csv.url }}" class="btn btn-primary btn-sm" target="_blank">
-              Download
-            </a>
-          </td>
-          <td>
-            <form method="post" action="{% url 'delete_cinema' cinema.pk %}">
-              {% csrf_token %}
-              <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-            </form>
-          </td>
-        </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+  <div class="form-row" style="margin:20px;">
+      <div class="form-group col-12" style="text-align: center; width: 100%;">
+        <table class="table table-striped table-bordered text-center">
+        <thead class="thead-dark">
+          <tr class="thead-dark" style="text-align: center;">
+            <th scope="col">File</th>
+            <th scope="col">Download</th>
+            <th scope="col">Delete</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for cinema in cinemas %}
+            <tr class="thead-dark" style="text-align: center;">
+              <td>{{cinema.csv}}</td>
+              <td>
+                <a href="{{ cinema.csv.url }}" class="btn btn-primary btn-sm" target="_blank">
+                  Download
+                </a>
+              </td>
+              <td>
+                <form method="post" action="{% url 'delete_cinema' cinema.pk %}">
+                  {% csrf_token %}
+                  <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                </form>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      </div>
+  </div>  
+
 {% endblock %}

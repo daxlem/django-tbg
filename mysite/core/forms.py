@@ -8,6 +8,6 @@ class CinemaForm(forms.ModelForm):
         model = Cinema
         fields = ('id', 'csv')
         widgets = {
-            'csv' : ClearableFileInput(attrs={'multiple': True, 'accept': ".xlsx, .xls, .csv", 'webkitdirectory': True, 'directory': True}),
+            'csv' : ClearableFileInput(attrs={'multiple': True, 'accept': ".xlsx, .xls, .csv", 'class': 'custom-select', 'webkitdirectory': True, 'directory': True}),
         }
         
