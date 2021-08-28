@@ -3,18 +3,64 @@
 {% block content %}
 
   {% block content_header %}
-    <h2>Cinema Reports</h2>
-    <p></p>
-    <form method="post" action="{% url 'read_cinema_all'%}">
+    <form method="post" action="{% url 'generate_report'%}" style="margin:20px">
       {% csrf_token %}
-      <button type="submit" class="btn btn-primary">Process Info</button>
-    </form>
+      <h2 style="margin-bottom: 25px">Reports</h2>
+      <div class="form-row">
+        <div class="form-group col-md-4">
+          <label for="inputFromDate">From Date:</label>
+          <input type='date' class="form-control" name="from_date" min="2019-01-01" max="2021-12-31" id="inputFromDate" style="text-align: center;"/>
+          <span class="input-group-addon">
+              <span class="glyphicon glyphicon-calendar"></span>
+          </span>
+        </div>
+        <div class="form-group col-md-4">
+          <label for="inputToDate">To Date:</label>
+          <input type='date' class="form-control" name="to_date" min="2019-01-01" max="2021-12-31" id="inputToDate" style="text-align: center;"/>
+          <span class="input-group-addon">
+              <span class="glyphicon glyphicon-calendar"></span>
+          </span>
+        </div>
+        <div class="form-group col-md-4">
+          <button type="submit" id="btnGenerate" class="btn btn-primary" style="width: 49%; margin-top: 32px;">Generate</button>
+          <button type="submit" class="btn btn-danger" target="_blank" style="width: 49%;  margin-top: 32px;">Download PDF</button>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group col-md-8">
+          <label for="inputReport">Report:</label>
+          <select class="form-control" name="report" id="inputReport">
+            <option>Admissions by Country</option>
+            <option>Admissions by Country and Circuit</option>
+            <option>Top 5 Movies General</option>
+            <option>Top 5 Movies By Country</option>
+          </select>
+        </div>
+        <div class="form-group col-md-4">
+          <label for="inputCountry">Country:</label>
+          <select class="form-control" name="country" id="inputCountry">
+            <option>El Salvador</option>
+            <option>Costa Rica</option>
+            <option>Guatemala</option>
+            <option>Honduras</option>
+            <option>Nicaragua</option>
+            <option>Panama</option>
+          </select>
+        </div>
+      </div>
+    
+
   {% endblock %}
-
   <p></p>
-  <div style="text-align: center;">
-    {{table|safe}}
-  </div>
 
+    <div class="form-row" style="margin:15px;">
+      <div class="form-group col-12" style="margin-top: 25px;" style="text-align: center; width: 100%;">
+        <table class="table table-striped" align="center">
+            {{table|safe}}
+        </table>
+      </div>
+    </div>  
+</form>
   
 {% endblock %}
