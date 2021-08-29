@@ -7,6 +7,7 @@ from os.path import isfile, join
 from sqlalchemy import create_engine
 import pandas as pd
 import os
+from datetime import datetime
 import warnings
 
 from .forms import CinemaForm
@@ -108,16 +109,57 @@ def generate_report(request):
             from_date = request.POST['from_date']
             country = request.POST['country']
             report = request.POST['report']
+            report_title = ""
 
             if not (to_date and from_date) == "":
+                msg_date_from = datetime.strptime((from_date), '%Y-%m-%d')
+                msg_date_to = datetime.strptime((to_date), '%Y-%m-%d')
+
                 if (report == "Admissions by Country"):
-                    Result = pd.read_sql_query('SELECT cd.country AS country, SUM(cd.week_adm) AS week_adm FROM core_data cd GROUP BY cd.country union all SELECT "Total", SUM(cd.week_adm) FROM core_data cd;', engine)
+                    query = 'SELECT cd.country AS country, SUM(cd.week_adm) AS week_adm FROM core_data cd WHERE substr(week_from,7)||substr(week_from,4,2)||substr(week_from,1,2) >= "@week_from" AND substr(week_to,7)||substr(week_to,4,2)||substr(week_to,1,2) <= "@week_to" GROUP BY cd.country union all SELECT "Total", SUM(cd.week_adm) FROM core_data cd WHERE substr(week_from,7)||substr(week_from,4,2)||substr(week_from,1,2) >= "@week_from" AND substr(week_to,7)||substr(week_to,4,2)||substr(week_to,1,2) <= "@week_to";'
+                    query = query.replace('@week_from',from_date.replace('-',''))
+                    query = query.replace('@week_to', to_date.replace('-',''))
+                    Result = pd.read_sql_query(query,engine)
                     headers = ["Country", "Total Admissions"]
                     dfGeneral = pd.DataFrame(Result)
                     dfGeneral.columns = headers
-                    dfGeneral['Total Admissions'] = dfGeneral['Total Admissions'].astype(int)
-                    dfGeneral['Total Admissions'] = dfGeneral.apply(lambda x: "{:,}".format(x['Total Admissions']), axis=1)              
-                    
+                    if not (dfGeneral.iloc[0][1] is None):
+                        report_title = 'Report | '+report + ' | '
+                        report_title = report_title + msg_date_from.strftime("%b %d %Y")
+                        report_title = report_title + ' - '
+                        report_title = report_title + msg_date_to.strftime("%b %d %Y")
+                        dfGeneral['Total Admissions'] = dfGeneral['Total Admissions'].astype(int)
+                        dfGeneral['Total Admissions'] = dfGeneral.apply(lambda x: "{:,}".format(x['Total Admissions']), axis=1)
+                    else:
+                        dfGeneral = pd.DataFrame()
+                        msg = 'No Records between '+ msg_date_from.strftime("%b %d %Y")
+                        msg = msg + ' and ' 
+                        msg = msg + msg_date_to.strftime("%b %d %Y")
+                        messages.warning(request, msg)
+                
+
+                if (report == "Gross by Country"):
+                    query = 'SELECT cd.country AS country, SUM(cd.week_gross) AS week_gross FROM core_data cd WHERE substr(week_from,7)||substr(week_from,4,2)||substr(week_from,1,2) >= "@week_from" AND substr(week_to,7)||substr(week_to,4,2)||substr(week_to,1,2) <= "@week_to" GROUP BY cd.country union all SELECT "Total", SUM(cd.week_gross) FROM core_data cd WHERE substr(week_from,7)||substr(week_from,4,2)||substr(week_from,1,2) >= "@week_from" AND substr(week_to,7)||substr(week_to,4,2)||substr(week_to,1,2) <= "@week_to";'
+                    query = query.replace('@week_from',from_date.replace('-',''))
+                    query = query.replace('@week_to', to_date.replace('-',''))
+                    Result = pd.read_sql_query(query,engine)
+                    headers = ["Country", "Total Gross"]
+                    dfGeneral = pd.DataFrame(Result)
+                    dfGeneral.columns = headers
+                    if not (dfGeneral.iloc[0][1] is None):
+                        report_title = 'Report | '+report + ' | '
+                        report_title = report_title + msg_date_from.strftime("%b %d %Y")
+                        report_title = report_title + ' - '
+                        report_title = report_title + msg_date_to.strftime("%b %d %Y")
+                        dfGeneral['Total Gross'] = dfGeneral['Total Gross'].astype(float)
+                        dfGeneral['Total Gross'] = dfGeneral.apply(lambda x: "{:,.2f}".format(x['Total Gross']), axis=1)
+                    else:
+                        dfGeneral = pd.DataFrame()
+                        msg = 'No Records between '+ msg_date_from.strftime("%b %d %Y")
+                        msg = msg + ' and ' 
+                        msg = msg + msg_date_to.strftime("%b %d %Y")
+                        messages.warning(request, msg)
+
                 if (report == "Admissions by Country and Circuit"):
                     result = engine.execute('SELECT cd.country AS country, SUM(cd.week_adm) AS week_adm FROM core_data cd GROUP BY cd.country;')
                     for row in result:
@@ -138,18 +180,20 @@ def generate_report(request):
                         data.append(row)
                     result.close()
                     headers = ["Country", "Total Admissions"]
+
+                table_title = 'text-center">'+'\n<h5 style="margin-bottom: 20px; text-align: center;">'
+                table_title = table_title + report_title
+                table_title = table_title + '</h5>'
+
+                df_clean = dfGeneral.to_html(classes='table table-striped table-bordered text-center', justify='center', index=False)
+                df_clean = df_clean.replace('<thead>','<thead class="thead-dark">')
+                df_clean = df_clean.replace('<tr style="text-align: center;">','<tr class="thead-dark" style="text-align: center;">')
+                df_clean = df_clean.replace('<th>','<th scope="col">')
+                df_clean = df_clean.replace('<td>Total</td>\n      <td>','<td bgcolor= "black" style="color:white; font-weight: bold">Total</td>\n      <td bgcolor= "black" style="color:white; font-weight: bold">')
+                df_clean = df_clean.replace('text-center">',table_title)
             else:
                 messages.error(request, "Date Fields Required")
-        table_title = 'text-center">'+'\n<h5 style="margin-bottom: 20px;">Report: '
-        table_title = table_title + report
-        table_title = table_title + '</h5>'
-
-        df_clean = dfGeneral.to_html(classes='table table-striped table-bordered text-center', justify='center', index=False)
-        df_clean = df_clean.replace('<thead>','<thead class="thead-dark">')
-        df_clean = df_clean.replace('<tr style="text-align: center;">','<tr class="thead-dark" style="text-align: center;">')
-        df_clean = df_clean.replace('<th>','<th scope="col">')
-        df_clean = df_clean.replace('<td>Total</td>\n      <td>','<td bgcolor= "black" style="color:white;">Total</td>\n      <td bgcolor= "black" style="color:white;">')
-        df_clean = df_clean.replace('text-center">',table_title) 
+                df_clean = dfGeneral.to_html(classes='table table-striped table-bordered text-center', justify='center', index=False)
     else:
         messages.error(request, "No Files Uploaded")
         df_clean = dfGeneral.to_html(classes='table table-striped table-bordered text-center', justify='center', index=False)

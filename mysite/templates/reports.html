@@ -8,22 +8,22 @@
       <h2 style="margin-bottom: 25px">Reports</h2>
       <div class="form-row">
         <div class="form-group col-md-4">
-          <label for="inputFromDate">From Date:</label>
-          <input type='date' class="form-control" name="from_date" min="2019-01-01" max="2021-12-31" id="inputFromDate" style="text-align: center;"/>
+          <label for="inputFromDate">From Week:</label>
+          <input type='date' class="form-control" name="from_date" value="2021-01-01" min="2019-01-01" max="2021-12-31" id="inputFromDate" style="text-align: center;" required/>
           <span class="input-group-addon">
               <span class="glyphicon glyphicon-calendar"></span>
           </span>
         </div>
         <div class="form-group col-md-4">
-          <label for="inputToDate">To Date:</label>
-          <input type='date' class="form-control" name="to_date" min="2019-01-01" max="2021-12-31" id="inputToDate" style="text-align: center;"/>
+          <label for="inputToDate">To Week:</label>
+          <input type='date' class="form-control" name="to_date" value="2021-12-31" min="2019-01-01" max="2021-12-31" id="inputToDate" style="text-align: center;" required/>
           <span class="input-group-addon">
               <span class="glyphicon glyphicon-calendar"></span>
           </span>
         </div>
         <div class="form-group col-md-4">
           <button type="submit" id="btnGenerate" class="btn btn-primary" style="width: 49%; margin-top: 32px;">Generate</button>
-          <button type="submit" class="btn btn-danger" target="_blank" style="width: 49%;  margin-top: 32px;">Download PDF</button>
+          <button type="submit" class="btn btn-danger" onclick="createPDF()" style="width: 49%;  margin-top: 32px;">Download PDF</button>
         </div>
       </div>
 
@@ -32,6 +32,7 @@
           <label for="inputReport">Report:</label>
           <select class="form-control" name="report" id="inputReport">
             <option>Admissions by Country</option>
+            <option>Gross by Country</option>
             <option>Admissions by Country and Circuit</option>
             <option>Top 5 Movies General</option>
             <option>Top 5 Movies By Country</option>
@@ -49,18 +50,43 @@
           </select>
         </div>
       </div>
-    
+      
+    {% endblock %}
+    <script>
+        function createPDF() {
+            var sTable = document.getElementById('form-table').innerHTML;
 
-  {% endblock %}
-  <p></p>
+            var style = "<style>";
+            style = style + "table {width: 75%;font: 17px Calibri;}";
+            style = style + "table, th, td {border: solid 1px #DDD; border-collapse: collapse;";
+            style = style + "padding: 2px 3px;text-align: center;}";
+            style = style + "</style>";
 
-    <div class="form-row" style="margin:15px;">
-      <div class="form-group col-12" style="margin-top: 25px;" style="text-align: center; width: 100%;">
+            // CREATE A WINDOW OBJECT.
+            var win = window.open('', '', 'height=1024,width=768');
+
+            win.document.write('<html><head>');
+            win.document.write('<title>Download Report</title>');   // <title> FOR PDF HEADER.
+            win.document.write(style);          // ADD STYLE INSIDE THE HEAD TAG.
+            win.document.write('</head>');
+            win.document.write('<body>');
+            win.document.write(sTable);         // THE TABLE CONTENTS INSIDE THE BODY TAG.
+            win.document.write('</body></html>');
+
+            win.document.close();   // CLOSE THE CURRENT WINDOW.
+
+            win.print();    // PRINT THE CONTENTS.
+        }
+    </script>
+
+
+    <div class="form-row" id="form-table" style="margin:15px;">
+      <div class="form-group col-12" style="margin-top: 5px;" style="text-align: center; width: 100%;">
         <table class="table table-striped" align="center">
             {{table|safe}}
         </table>
       </div>
-    </div>  
-</form>
-  
-{% endblock %}
+    </div>
+
+    </form>
+  {% endblock %}
