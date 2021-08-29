@@ -152,7 +152,6 @@ def generate_report(request):
                         report_title = report_title + msg_date_to.strftime("%b %d %Y")
                         dfGeneral['Total Gross ($)'] = dfGeneral['Total Gross ($)'].astype(float)
                         dfGeneral['Total Gross ($)'] = dfGeneral.apply(lambda x: "${:,.2f}".format(x['Total Gross ($)']), axis=1)
-                        print(dfGeneral.T)
                     else:
                         dfGeneral = pd.DataFrame()
                         msg = 'No Records between '+ msg_date_from.strftime("%b %d %Y")
@@ -199,7 +198,7 @@ def generate_report(request):
                         messages.warning(request, msg)
 
                 if (report == "Top 5 Movies - General Gross"):
-                    query = 'SELECT cd.title AS title, SUM(cd.week_gross) AS week_gross FROM core_data cd WHERE substr(week_from,7)||substr(week_from,4,2)||substr(week_from,1,2) >= "week_from" AND substr(week_to,7)||substr(week_to,4,2)||substr(week_to,1,2) <= "@week_to" GROUP BY cd.title ORDER BY week_adm DESC LIMIT 5;'
+                    query = 'SELECT cd.title AS title, SUM(cd.week_gross) AS week_gross FROM core_data cd WHERE substr(week_from,7)||substr(week_from,4,2)||substr(week_from,1,2) >= "week_from" AND substr(week_to,7)||substr(week_to,4,2)||substr(week_to,1,2) <= "@week_to" GROUP BY cd.title ORDER BY week_gross DESC LIMIT 5;'
                     query = query.replace('@week_from',from_date.replace('-',''))
                     query = query.replace('@week_to', to_date.replace('-',''))
                     Result = pd.read_sql_query(query,engine)
@@ -230,12 +229,70 @@ def generate_report(request):
                         msg = msg + msg_date_to.strftime("%b %d %Y")
                         messages.warning(request, msg)
 
-                if (report == "Top 5 Movies By Country"):
-                    result = engine.execute('SELECT cd.country AS country, SUM(cd.week_adm) AS week_adm FROM core_data cd GROUP BY cd.country;')
-                    for row in result:
-                        data.append(row)
-                    result.close()
-                    headers = ["Country", "Total Admissions"]
+                if (report == "Top 5 Movies - Country Admissions"):
+                    query = 'SELECT cd.title AS title, SUM(cd.week_adm) AS week_adm FROM core_data cd WHERE cd.country="@country_name" AND substr(week_from,7)||substr(week_from,4,2)||substr(week_from,1,2) >= "week_from" AND substr(week_to,7)||substr(week_to,4,2)||substr(week_to,1,2) <= "@week_to" GROUP BY cd.title ORDER BY week_adm DESC LIMIT 5;'
+                    query = query.replace('@week_from',from_date.replace('-',''))
+                    query = query.replace('@week_to', to_date.replace('-',''))
+                    query = query.replace('@country_name',country)
+                    Result = pd.read_sql_query(query,engine)
+                    headers = ["Title", "Total Admissions"]
+                    dfGeneral = pd.DataFrame(Result)
+                    dfGeneral.columns = headers
+                    if not (dfGeneral.iloc[0][1] is None):
+                        report_title = 'Report | '+report + ' | ' + country + ' | ' 
+                        report_title = report_title + msg_date_from.strftime("%b %d %Y")
+                        report_title = report_title + ' - '
+                        report_title = report_title + msg_date_to.strftime("%b %d %Y")
+                        dfGeneral['Total Admissions'] = dfGeneral['Total Admissions'].astype(int)
+                        total_sum = dfGeneral['Total Admissions'].sum()
+                        dfGeneral.loc[len(dfGeneral.index)] = ['Total Top 5', total_sum]
+                        query = 'SELECT "Total", SUM(cd.week_adm) AS week_adm FROM core_data cd WHERE substr(week_from,7)||substr(week_from,4,2)||substr(week_from,1,2) >= "week_from" AND substr(week_to,7)||substr(week_to,4,2)||substr(week_to,1,2) <= "@week_to" LIMIT 1;'
+                        Result = pd.read_sql_query(query,engine)
+                        headers = ["Title", "Total Admissions"]
+                        dfTotal = pd.DataFrame(Result)
+                        dfTotal.columns = headers
+                        print(Result)
+                        dfGeneral = dfGeneral.append(Result)
+                        dfGeneral['Total Admissions'] = dfGeneral.apply(lambda x: "{:,}".format(x['Total Admissions']), axis=1)
+                    else:
+                        dfGeneral = pd.DataFrame()
+                        msg = 'No Records between '+ msg_date_from.strftime("%b %d %Y")
+                        msg = msg + ' and ' 
+                        msg = msg + msg_date_to.strftime("%b %d %Y")
+                        messages.warning(request, msg)
+
+                if (report == "Top 5 Movies - Country Gross"):
+                    query = 'SELECT cd.title AS title, SUM(cd.week_gross) AS week_gross FROM core_data cd WHERE cd.country="@country_name" AND substr(week_from,7)||substr(week_from,4,2)||substr(week_from,1,2) >= "week_from" AND substr(week_to,7)||substr(week_to,4,2)||substr(week_to,1,2) <= "@week_to" GROUP BY cd.title ORDER BY week_gross DESC LIMIT 5;'
+                    query = query.replace('@week_from',from_date.replace('-',''))
+                    query = query.replace('@week_to', to_date.replace('-',''))
+                    query = query.replace('@country_name',country)
+                    Result = pd.read_sql_query(query,engine)
+                    headers = ["Title", "Total Gross ($)"]
+                    dfGeneral = pd.DataFrame(Result)
+                    dfGeneral.columns = headers
+                    if not (dfGeneral.iloc[0][1] is None):
+                        report_title = 'Report | '+report + ' | ' + country + ' | '
+                        report_title = report_title + msg_date_from.strftime("%b %d %Y")
+                        report_title = report_title + ' - '
+                        report_title = report_title + msg_date_to.strftime("%b %d %Y")
+                        dfGeneral['Total Gross ($)'] = dfGeneral['Total Gross ($)'].astype(int)
+                        total_sum = dfGeneral['Total Gross ($)'].sum()
+                        dfGeneral.loc[len(dfGeneral.index)] = ['Total Top 5', total_sum]
+                        query = 'SELECT "Total", SUM(cd.week_gross) AS week_gross FROM core_data cd WHERE substr(week_from,7)||substr(week_from,4,2)||substr(week_from,1,2) >= "week_from" AND substr(week_to,7)||substr(week_to,4,2)||substr(week_to,1,2) <= "@week_to" LIMIT 1;'
+                        Result = pd.read_sql_query(query,engine)
+                        headers = ["Title", "Total Gross ($)"]
+                        dfTotal = pd.DataFrame(Result)
+                        dfTotal.columns = headers
+                        print(Result)
+                        dfGeneral = dfGeneral.append(Result)
+                        dfGeneral['Total Gross ($)'] = dfGeneral.apply(lambda x: "${:,.2f}".format(x['Total Gross ($)']), axis=1)
+                        
+                    else:
+                        dfGeneral = pd.DataFrame()
+                        msg = 'No Records between '+ msg_date_from.strftime("%b %d %Y")
+                        msg = msg + ' and ' 
+                        msg = msg + msg_date_to.strftime("%b %d %Y")
+                        messages.warning(request, msg)
 
                 table_title = 'text-center">'+'\n<h5 style="margin-bottom: 20px; text-align: center;">'
                 table_title = table_title + report_title
