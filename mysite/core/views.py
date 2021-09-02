@@ -169,10 +169,14 @@ def generate_report(request):
                         msg = msg + msg_date_to.strftime("%b %d %Y")
                         messages.warning(request, msg)
 
-                if (report == "Admissions by Country and Circuit"):
-                    query = 'SELECT cd.country ,cd.circuit , sum(cd.week_adm) as total from core_data cd WHERE substr(week_from,7)||substr(week_from,4,2)||substr(week_from,1,2) >= "@week_from" AND substr(week_to,7)||substr(week_to,4,2)||substr(week_to,1,2) <= "@week_to" group by country,circuit order by country;'
+                if (report == "Admissions by Circuit - General"):
+                    query = 'SELECT cd.country ,cd.circuit , sum(cd.@week_adm) as total from core_data cd WHERE substr(week_from,7)||substr(week_from,4,2)||substr(week_from,1,2) >= "@week_from" AND substr(week_to,7)||substr(week_to,4,2)||substr(week_to,1,2) <= "@week_to" group by country,circuit order by country;'
                     query = query.replace('@week_from',from_date.replace('-',''))
                     query = query.replace('@week_to', to_date.replace('-',''))
+                    if(parameter_time=="week"):
+                        query = query.replace('@week_adm','week_adm')
+                    else:
+                        query = query.replace('@week_adm','weekend_adm')
                     Result = pd.read_sql_query(query,engine)
                     headers = ["Country","Circuit","Total Admissions"]
                     dfGeneral = pd.DataFrame(Result)
@@ -184,9 +188,10 @@ def generate_report(request):
                         report_title = report_title + msg_date_to.strftime("%b %d %Y")
                         dfGeneral['Total Admissions'] = dfGeneral['Total Admissions'].astype(int)
                         total_sum = dfGeneral['Total Admissions'].sum()
-                        dfGeneral.loc[len(dfGeneral.index)] = ['Total','Total', total_sum]
+                        dfGeneral.loc[len(dfGeneral.index)] = ['-t','Total', total_sum]
                         dfGeneral['Total Admissions'] = dfGeneral['Total Admissions'].astype(float)
-                        dfGeneral['Total Admissions'] = dfGeneral.apply(lambda x: "${:,.2f}".format(x['Total Admissions']), axis=1)
+                        dfGeneral['Total Admissions'] = dfGeneral.apply(lambda x: "{:,}".format(x['Total Admissions']), axis=1)
+                        dfGeneral['Total Admissions'] = dfGeneral['Total Admissions'].astype(str).apply(lambda x: x.replace('.0',''))
                     else:
                         dfGeneral = pd.DataFrame()
                         msg = 'No Records between '+ msg_date_from.strftime("%b %d %Y")
