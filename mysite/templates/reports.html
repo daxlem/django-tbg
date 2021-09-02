@@ -31,6 +31,7 @@
         <div class="form-group col-md-8">
           <label for="inputReport">Report:</label>
           <select class="form-control" name="report" id="inputReport">
+            <option>Top 5 Movies - General Admissions by Circuit</option>
             <option>Admissions by Country</option>
             <option>Gross by Country</option>
             <option>Admissions by Country and Circuit</option>
@@ -82,8 +83,8 @@
     </script>
 
 
-    <div class="form-row" id="form-table" style="margin:15px;">
-      <div class="form-group col-12" style="margin-top: 5px;" style="text-align: center; width: 100%;">
+    <div class="form-row" id="form-table" style="margin:15px; overflow: auto;">
+      <div class="form-group col-12" style="margin-top: 5px;" style="text-align: center; width: 100%; overflow: scroll;">
         <table class="table table-striped" align="center">
             {{table|safe}}
         </table>

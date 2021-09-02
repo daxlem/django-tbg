@@ -1,3 +1,5 @@
-media/*
+
 Data.csv
+*.csv
+*.xls
 tbgdb.sqlite3
