@@ -160,11 +160,29 @@ def generate_report(request):
                         messages.warning(request, msg)
 
                 if (report == "Admissions by Country and Circuit"):
-                    result = engine.execute('SELECT cd.country AS country, SUM(cd.week_adm) AS week_adm FROM core_data cd GROUP BY cd.country;')
-                    for row in result:
-                        data.append(row)
-                    result.close()
-                    headers = ["Country", "Total Admissions"]
+                    query = 'SELECT cd.country ,cd.circuit , sum(cd.week_adm) as total from core_data cd WHERE substr(week_from,7)||substr(week_from,4,2)||substr(week_from,1,2) >= "@week_from" AND substr(week_to,7)||substr(week_to,4,2)||substr(week_to,1,2) <= "@week_to" group by country,circuit order by country;'
+                    query = query.replace('@week_from',from_date.replace('-',''))
+                    query = query.replace('@week_to', to_date.replace('-',''))
+                    Result = pd.read_sql_query(query,engine)
+                    headers = ["Country","Circuit","Total Admissions"]
+                    dfGeneral = pd.DataFrame(Result)
+                    dfGeneral.columns = headers
+                    if not (dfGeneral.iloc[0][1] is None):
+                        report_title = 'Report | '+report + ' | '
+                        report_title = report_title + msg_date_from.strftime("%b %d %Y")
+                        report_title = report_title + ' - '
+                        report_title = report_title + msg_date_to.strftime("%b %d %Y")
+                        dfGeneral['Total Admissions'] = dfGeneral['Total Admissions'].astype(int)
+                        total_sum = dfGeneral['Total Admissions'].sum()
+                        dfGeneral.loc[len(dfGeneral.index)] = ['Total','Total', total_sum]
+                        dfGeneral['Total Admissions'] = dfGeneral['Total Admissions'].astype(float)
+                        dfGeneral['Total Admissions'] = dfGeneral.apply(lambda x: "${:,.2f}".format(x['Total Admissions']), axis=1)
+                    else:
+                        dfGeneral = pd.DataFrame()
+                        msg = 'No Records between '+ msg_date_from.strftime("%b %d %Y")
+                        msg = msg + ' and ' 
+                        msg = msg + msg_date_to.strftime("%b %d %Y")
+                        messages.warning(request, msg)
 
                 if (report == "Top 5 Movies - General Admissions"):
                     query = 'SELECT cd.title AS title, SUM(cd.week_adm) AS week_adm FROM core_data cd WHERE substr(week_from,7)||substr(week_from,4,2)||substr(week_from,1,2) >= "week_from" AND substr(week_to,7)||substr(week_to,4,2)||substr(week_to,1,2) <= "@week_to" GROUP BY cd.title ORDER BY week_adm DESC LIMIT 5;'
