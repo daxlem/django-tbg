@@ -199,6 +199,127 @@ def generate_report(request):
                         msg = msg + msg_date_to.strftime("%b %d %Y")
                         messages.warning(request, msg)
 
+                if (report == "Admissions by Country and Circuit"):
+                    query = 'SELECT cd.country AS country, SUM(cd.@week_adm) AS @week_adm FROM core_data cd WHERE substr(week_from,7)||substr(week_from,4,2)||substr(week_from,1,2) >= "@week_from" AND substr(week_to,7)||substr(week_to,4,2)||substr(week_to,1,2) <= "@week_to" GROUP BY cd.country union all SELECT "Total", SUM(cd.@week_adm) FROM core_data cd WHERE substr(week_from,7)||substr(week_from,4,2)||substr(week_from,1,2) >= "@week_from" AND substr(week_to,7)||substr(week_to,4,2)||substr(week_to,1,2) <= "@week_to";'
+                    query = query.replace('@week_from',from_date.replace('-',''))
+                    query = query.replace('@week_to', to_date.replace('-',''))
+                    query = query.replace('@week_to', to_date.replace('-',''))
+                    if(parameter_time=="week"):
+                        query = query.replace('@week_adm','week_adm')
+                    else:
+                        query = query.replace('@week_adm','weekend_adm')
+                    Result = pd.read_sql_query(query,engine)
+                    headers = ["Country", "Total Admissions"]
+                    dfGeneral = pd.DataFrame(Result)
+                    dfGeneral.columns = headers
+                    if not (dfGeneral.iloc[0][1] is None):
+                        report_title = 'Report | '+report + ' | '
+                        report_title = report_title + msg_date_from.strftime("%b %d %Y")
+                        report_title = report_title + ' - '
+                        report_title = report_title + msg_date_to.strftime("%b %d %Y")
+                        #dfGeneral['Total Admissions'] = dfGeneral['Total Admissions'].astype(int)
+                        #dfGeneral['Total Admissions'] = dfGeneral.apply(lambda x: "{:,}".format(x['Total Admissions']), axis=1)
+
+                        query = 'SELECT country AS CountryCircuit, circuit AS Circuit, SUM(@week_adm) AS CircuitAdm FROM core_data cd WHERE Circuit IN (SELECT circuit AS Circuit FROM core_data cd GROUP BY circuit ORDER BY SUM(@week_adm) DESC LIMIT 3) AND substr(week_from,7)||substr(week_from,4,2)||substr(week_from,1,2) >= "@week_from" AND substr(week_to,7)||substr(week_to,4,2)||substr(week_to,1,2) <= "@week_to" GROUP BY country,circuit ORDER BY CircuitAdm ASC;'
+                        query = query.replace('@week_from',from_date.replace('-',''))
+                        query = query.replace('@week_to', to_date.replace('-',''))
+                        if(parameter_time=="week"):
+                            query = query.replace('@week_adm','week_adm')
+                        else:
+                            query = query.replace('@week_adm','weekend_adm')
+                        Share = pd.read_sql_query(query,engine)
+                        
+                        query = 'SELECT circuit AS Circuit, SUM(@week_adm) AS CircuitAdm FROM core_data cd WHERE substr(week_from,7)||substr(week_from,4,2)||substr(week_from,1,2) >= "@week_from" AND substr(week_to,7)||substr(week_to,4,2)||substr(week_to,1,2) <= "@week_to" GROUP BY circuit ORDER BY CircuitAdm DESC LIMIT 3;'
+                        query = query.replace('@week_from',from_date.replace('-',''))
+                        query = query.replace('@week_to', to_date.replace('-',''))
+                        if(parameter_time=="week"):
+                            query = query.replace('@week_adm','week_adm')
+                        else:
+                            query = query.replace('@week_adm','weekend_adm')
+                        TopShare = pd.read_sql_query(query,engine)
+
+                        topCircuits = []
+                        totalCircuits = []
+                        sumTotalCircuits = []
+                        totalesGeneral = []
+
+                        for index, row in TopShare.iterrows():
+                            topCircuits.append(row['Circuit'])
+                            totalCircuits.append(row['CircuitAdm'])
+
+                        for index, row in Share.iterrows():
+                            for index2, titles in dfGeneral.iterrows():
+                                title_top = titles['Country']
+                                title_circuit = row['CountryCircuit']
+                                circuit_top = row['Circuit']
+                                circuit_adm = row['CircuitAdm']
+
+                                if (circuit_top in topCircuits) and (title_circuit in title_top):
+                                    if not (circuit_top in dfGeneral.columns):
+                                        data = ["0.00","0.00","0.00","0.00","0.00","0.00","0.00"]
+                                        data2 = ["0","0","0","0","0","0","0"]
+                                        dfGeneral.insert(2, column=topCircuits[0], value=data2)
+                                        dfGeneral.insert(3, column='SHR% [1]', value=data)
+                                        dfGeneral.insert(4, column=topCircuits[1], value=data2)
+                                        dfGeneral.insert(5, column='SHR% [2]', value=data)
+                                        dfGeneral.insert(6, column=topCircuits[2], value=data2)
+                                        dfGeneral.insert(7, column='SHR% [3]', value=data)
+                                        
+                                                                               
+                                    if (circuit_top in dfGeneral.columns):
+                                        if(title_circuit==title_top):
+                                            dfGeneral.at[index2,circuit_top]=circuit_adm
+
+                        for index, row in dfGeneral.iterrows():
+                            total_adm = dfGeneral.iloc[index]['Total Admissions']
+
+                            if (float(dfGeneral.iloc[index][topCircuits[0]]))>0.00:
+                                circuit_adm1 = round((dfGeneral.iloc[index][topCircuits[0]]/total_adm)*100,2)
+                                dfGeneral.at[index,'SHR% [1]'] = circuit_adm1
+                            else:
+                                dfGeneral.at[index,'SHR% [1]'] = 0.00
+
+                            if (float(dfGeneral.iloc[index][topCircuits[1]]))>0.00:
+                                circuit_adm2 = round((dfGeneral.iloc[index][topCircuits[1]]/total_adm)*100,2)
+                                dfGeneral.at[index,'SHR% [2]'] = circuit_adm2
+                            else:
+                                dfGeneral.at[index,'SHR% [2]'] = 0.00
+                            
+                            if (float(dfGeneral.iloc[index][topCircuits[2]]))>0.00:
+                                circuit_adm3 = round((dfGeneral.iloc[index][topCircuits[2]]/total_adm)*100,2)
+                                dfGeneral.at[index,'SHR% [3]'] = circuit_adm3
+                            else:
+                                dfGeneral.at[index,'SHR% [3]'] = 0.00                    
+
+                        query = 'SELECT "Total", SUM(cd.@week_adm) AS CircuitAdm FROM core_data cd WHERE substr(week_from,7)||substr(week_from,4,2)||substr(week_from,1,2) >= "@week_from" AND substr(week_to,7)||substr(week_to,4,2)||substr(week_to,1,2) <= "@week_to" UNION ALL SELECT circuit AS Circuit, SUM(@week_adm) AS CircuitAdm FROM core_data cd WHERE substr(week_from,7)||substr(week_from,4,2)||substr(week_from,1,2) >= "@week_from" AND substr(week_to,7)||substr(week_to,4,2)||substr(week_to,1,2) <= "@week_to" GROUP BY circuit ORDER BY CircuitAdm DESC'
+                        query = query.replace('@week_from',from_date.replace('-',''))
+                        query = query.replace('@week_to', to_date.replace('-',''))
+                        if(parameter_time=="week"):
+                            query = query.replace('@week_adm','week_adm')
+                        else:
+                            query = query.replace('@week_adm','weekend_adm')
+                        TotalCircuit = pd.read_sql_query(query,engine)
+
+                        for index, row in TotalCircuit.iterrows():
+                            if ((row['"Total"']) in dfGeneral.columns) or ((row['"Total"'])=='Total'):
+                                if((row['"Total"'])=='Total'):
+                                    dfGeneral.at[6,'Total Admissions'] = row['CircuitAdm']
+                                else:
+                                    dfGeneral.at[6,row['"Total"']] = '-t'+str(row['CircuitAdm'])
+                                    dfGeneral.at[6,'SHR% [1]'] = '-t'
+                                    dfGeneral.at[6,'SHR% [2]'] = '-t'
+                                    dfGeneral.at[6,'SHR% [3]'] = '-t'                               
+
+                        dfGeneral['Total Admissions'] = dfGeneral['Total Admissions'].astype(str).apply(lambda x: x.replace('.0',''))
+
+
+                    else:
+                        dfGeneral = pd.DataFrame()
+                        msg = 'No Records between '+ msg_date_from.strftime("%b %d %Y")
+                        msg = msg + ' and ' 
+                        msg = msg + msg_date_to.strftime("%b %d %Y")
+                        messages.warning(request, msg)
+
                 if (report == "Top 5 Movies - General Admissions"):
                     query = 'SELECT cd.title AS title, SUM(cd.@week_adm) AS @week_adm FROM core_data cd WHERE substr(week_from,7)||substr(week_from,4,2)||substr(week_from,1,2) >= "@week_from" AND substr(week_to,7)||substr(week_to,4,2)||substr(week_to,1,2) <= "@week_to" GROUP BY cd.title ORDER BY @week_adm DESC LIMIT 5;'
                     query = query.replace('@week_from',from_date.replace('-',''))
@@ -417,10 +538,6 @@ def generate_report(request):
                             topCircuits.append(row['Circuit'])
                             totalCircuits.append(row['CircuitAdm'])
 
-                        column=2
-                        cant_headers=2
-                        cont=3
-
                         for index, row in Share.iterrows():
                             for index2, titles in dfGeneral.iterrows():
                                 title_top = titles['Title']
@@ -430,20 +547,18 @@ def generate_report(request):
 
                                 if (circuit_top in topCircuits) and (title_circuit in title_top):
                                     if not (circuit_top in dfGeneral.columns):
-                                        cant_headers=cant_headers+1
                                         data = ["0.00","0.00","0.00","0.00","0.00"]
-                                        share_name = 'SHR% ['+str(cont)+']'
-                                        dfGeneral.insert(column, column=share_name, value=data)
-                                        data = ["0","0","0","0","0"]
-                                        cant_headers=cant_headers+1
-                                        dfGeneral.insert(column, column=circuit_top, value=data)
-                                        cont=cont-1
-                                        
+                                        data2 = ["0","0","0","0","0"]
+                                        dfGeneral.insert(2, column=topCircuits[0], value=data2)
+                                        dfGeneral.insert(3, column='SHR% [1]', value=data)
+                                        dfGeneral.insert(4, column=topCircuits[1], value=data2)
+                                        dfGeneral.insert(5, column='SHR% [2]', value=data)
+                                        dfGeneral.insert(6, column=topCircuits[2], value=data2)
+                                        dfGeneral.insert(7, column='SHR% [3]', value=data)
+
                                     if (circuit_top in dfGeneral.columns):
                                         if(title_circuit==title_top):
                                             dfGeneral.at[index2,circuit_top]=circuit_adm
-
-                        column=column+1
 
                         for index, row in dfGeneral.iterrows():
                             total_adm = dfGeneral.iloc[index]['Total Admissions']
