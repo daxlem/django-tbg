@@ -1574,7 +1574,13 @@ def generate_report(request):
                         week_adm_sum = dfGeneral['Week Admissions'].sum()                        
                         weekend_adm_sum = dfGeneral['Weekend Admissions'].sum()
 
-                        data = ["0.00","0.00","0.00","0.00","0.00","0.00","0.00","0.00","0.00","0.00","0.00","0.00","0.00","0.00","0.00","0.00","0.00","0.00","0.00","0.00","0.00","0.00","0.00","0.00","0.00"]
+                        query = 'SELECT COUNT(DISTINCT cd.circuit) AS countCircuit from core_data cd WHERE substr(week_from,7)||substr(week_from,4,2)||substr(week_from,1,2) >= "@week_from" AND substr(week_to,7)||substr(week_to,4,2)||substr(week_to,1,2) <= "@week_to";'
+                        query = query.replace('@week_from',from_date.replace('-',''))
+                        query = query.replace('@week_to', to_date.replace('-',''))
+                        circuit_count = engine.execute(query)
+                        count = circuit_count.fetchone()[0]
+                        data = ["0.00"]*int(count)
+                        
                         dfGeneral.insert(2, column='SHR% [1]', value=data)
                         dfGeneral.insert(4, column='SHR% [2]', value=data)
 
@@ -1626,7 +1632,13 @@ def generate_report(request):
                         week_gross_sum = dfGeneral['Week Gross ($)'].sum()                       
                         weekend_gross_sum = dfGeneral['Weekend Gross ($)'].sum()
 
-                        data = ["0.00","0.00","0.00","0.00","0.00","0.00","0.00","0.00","0.00","0.00","0.00","0.00","0.00","0.00","0.00","0.00","0.00","0.00","0.00","0.00","0.00","0.00","0.00","0.00","0.00"]
+                        query = 'SELECT COUNT(DISTINCT cd.circuit) AS countCircuit from core_data cd WHERE substr(week_from,7)||substr(week_from,4,2)||substr(week_from,1,2) >= "@week_from" AND substr(week_to,7)||substr(week_to,4,2)||substr(week_to,1,2) <= "@week_to";'
+                        query = query.replace('@week_from',from_date.replace('-',''))
+                        query = query.replace('@week_to', to_date.replace('-',''))
+                        circuit_count = engine.execute(query)
+                        count = circuit_count.fetchone()[0]
+                        data = ["0.00"]*int(count)
+
                         dfGeneral.insert(2, column='SHR% [1]', value=data)
                         dfGeneral.insert(4, column='SHR% [2]', value=data)
 
