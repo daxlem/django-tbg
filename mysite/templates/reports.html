@@ -3,8 +3,9 @@
 {% block content %}
 
   {% block content_header %}
-    <form method="post" action="{% url 'generate_report'%}" style="margin:20px">
+    <form method="post" id="formReport" action="{% url 'generate_report'%}" style="margin:20px">
       {% csrf_token %}
+      <div id="divReport">
       <h2 style="margin-bottom: 25px">Reports</h2>
       <div class="form-row">
         <div class="form-group col-md-4">
@@ -23,7 +24,7 @@
         </div>
         <div class="form-group col-md-4">
           <button type="submit" id="btnGenerate" class="btn btn-primary" style="width: 49%; margin-top: 32px;">Generate</button>
-          <button type="submit" class="btn btn-danger" onclick="createPDF()" style="width: 49%;  margin-top: 32px;">Download PDF</button>
+          <button type="submit" class="btn btn-danger" id="printReport" onclick="printPDF()" style="width: 49%;  margin-top: 32px;">Save PDF</button>
         </div>
       </div>
 
@@ -45,12 +46,12 @@
             <option>Top 5 Movies - Country Admissions by Circuit</option>
             <option>Top 5 Movies - Country Gross</option>
             <option>Top 5 Movies - Country Gross by Circuit</option>
-            <option>Week vs Weekend - General Admission</option>
+            <option>Week vs Weekend - General Admissions</option>
             <option>Week vs Weekend - General Gross</option>
-            <option>Week vs Weekend - Country Admission</option>
-            <option>Week vs Weekend - Country Gross</option>
-            <option>Week vs Weekend - Top 5 Movies</option>
-            <option>Week vs Weekend - Circuits</option>
+            <option>Week vs Weekend - Top 5 Movies Admissions</option>
+            <option>Week vs Weekend - Top 5 Movies Gross</option>
+            <option>Week vs Weekend - Circuit Admissions</option>
+            <option>Week vs Weekend - Circuit Gross</option>
           </select>
         </div>
         <div class="form-group col-md-3">
@@ -75,41 +76,22 @@
           </div>
         </div>
       </div>
+    </div>
       
     {% endblock %}
     <script>
-        function createPDF() {
-            var sTable = document.getElementById('form-table').innerHTML;
-
-            var style = "<style>";
-            style = style + "table {width: 75%;font: 17px Calibri;}";
-            style = style + "table, th, td {border: solid 1px #DDD; border-collapse: collapse;";
-            style = style + "padding: 2px 3px;text-align: center;}";
-            style = style + "</style>";
-
-            // CREATE A WINDOW OBJECT.
-            var win = window.open('', '', 'height=1024,width=768');
-
-            win.document.write('<html><head>');
-            win.document.write('<title>Download Report</title>');   // <title> FOR PDF HEADER.
-            win.document.write(style);          // ADD STYLE INSIDE THE HEAD TAG.
-            win.document.write('</head>');
-            win.document.write('<body>');
-            win.document.write(sTable);         // THE TABLE CONTENTS INSIDE THE BODY TAG.
-            win.document.write('</body></html>');
-
-            win.document.close();   // CLOSE THE CURRENT WINDOW.
-
-            win.print();    // PRINT THE CONTENTS.
-        }
+      function printPDF(){
+        var x = document.getElementById("divReport");
+        x.style.display = "none";
+        window.print()
+        x.style.display = "block";
+      }
     </script>
 
 
     <div class="form-row" id="form-table" style="margin:10px; overflow: auto;">
       <div class="form-group col-12" style="margin-top: 5px;" style="text-align: center; width: 100%; overflow: scroll;">
-        <table class="table table-striped" align="center">
-            {{table|safe}}
-        </table>
+        {{table|safe}}
       </div>
     </div>
 

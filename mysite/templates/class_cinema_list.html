@@ -5,7 +5,7 @@
     {% csrf_token %}
     <h2 style="margin-bottom: 25px">Upload Data</h2>
     <a href="{% url 'class_upload_cinema' %}" style="margin-right:15px; margin-bottom: 15px;" class="btn btn-primary">Import Data</a>
-    <a href="{% url 'reports' %}" style="margin-right:15px; margin-bottom: 15px;" class="btn btn-secondary">Generate Reports</a>
     <button type="submit" style="margin-right:15px; margin-bottom: 15px;" class="btn btn-danger">Delete All Data</button>
+    <a href="{% url 'reports' %}" style="margin-right:15px; margin-bottom: 15px;" class="btn btn-secondary">Generate Reports</a>    
   </form>
 {% endblock %}

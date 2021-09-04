@@ -130,7 +130,11 @@ def generate_report(request):
                     dfGeneral = pd.DataFrame(Result)
                     dfGeneral.columns = headers
                     if not (dfGeneral.iloc[0][1] is None):
-                        report_title = 'Report | '+report + ' | '
+                        if(parameter_time=="week"):
+                            report_title = 'Week Report | '
+                        else:
+                            report_title = 'Weekend Report | '
+                        report_title = report_title + report + ' | '
                         report_title = report_title + msg_date_from.strftime("%b %d %Y")
                         report_title = report_title + ' - '
                         report_title = report_title + msg_date_to.strftime("%b %d %Y")
@@ -156,7 +160,11 @@ def generate_report(request):
                     dfGeneral = pd.DataFrame(Result)
                     dfGeneral.columns = headers
                     if not (dfGeneral.iloc[0][1] is None):
-                        report_title = 'Report | '+report + ' | '
+                        if(parameter_time=="week"):
+                            report_title = 'Week Report | '
+                        else:
+                            report_title = 'Weekend Report | '
+                        report_title = report_title + report + ' | '
                         report_title = report_title + msg_date_from.strftime("%b %d %Y")
                         report_title = report_title + ' - '
                         report_title = report_title + msg_date_to.strftime("%b %d %Y")
@@ -182,7 +190,11 @@ def generate_report(request):
                     dfGeneral = pd.DataFrame(Result)
                     dfGeneral.columns = headers
                     if not (dfGeneral.iloc[0][1] is None):
-                        report_title = 'Report | '+report + ' | '
+                        if(parameter_time=="week"):
+                            report_title = 'Week Report | '
+                        else:
+                            report_title = 'Weekend Report | '
+                        report_title = report_title + report + ' | '
                         report_title = report_title + msg_date_from.strftime("%b %d %Y")
                         report_title = report_title + ' - '
                         report_title = report_title + msg_date_to.strftime("%b %d %Y")
@@ -212,7 +224,11 @@ def generate_report(request):
                     dfGeneral = pd.DataFrame(Result)
                     dfGeneral.columns = headers
                     if not (dfGeneral.iloc[0][1] is None):
-                        report_title = 'Report | '+report + ' | '
+                        if(parameter_time=="week"):
+                            report_title = 'Week Report | '
+                        else:
+                            report_title = 'Weekend Report | '
+                        report_title = report_title + report + ' | '
                         report_title = report_title + msg_date_from.strftime("%b %d %Y")
                         report_title = report_title + ' - '
                         report_title = report_title + msg_date_to.strftime("%b %d %Y")
@@ -242,7 +258,11 @@ def generate_report(request):
                     dfGeneral = pd.DataFrame(Result)
                     dfGeneral.columns = headers
                     if not (dfGeneral.iloc[0][1] is None):
-                        report_title = 'Report | '+report + ' | '
+                        if(parameter_time=="week"):
+                            report_title = 'Week Report | '
+                        else:
+                            report_title = 'Weekend Report | '
+                        report_title = report_title + report + ' | '
                         report_title = report_title + msg_date_from.strftime("%b %d %Y")
                         report_title = report_title + ' - '
                         report_title = report_title + msg_date_to.strftime("%b %d %Y")
@@ -364,7 +384,11 @@ def generate_report(request):
                     dfGeneral = pd.DataFrame(Result)
                     dfGeneral.columns = headers
                     if not (dfGeneral.iloc[0][1] is None):
-                        report_title = 'Report | '+report + ' | '
+                        if(parameter_time=="week"):
+                            report_title = 'Week Report | '
+                        else:
+                            report_title = 'Weekend Report | '
+                        report_title = report_title + report + ' | '
                         report_title = report_title + msg_date_from.strftime("%b %d %Y")
                         report_title = report_title + ' - '
                         report_title = report_title + msg_date_to.strftime("%b %d %Y")
@@ -487,7 +511,11 @@ def generate_report(request):
                     dfGeneral = pd.DataFrame(Result)
                     dfGeneral.columns = headers
                     if not (dfGeneral.iloc[0][1] is None):
-                        report_title = 'Report | '+report + ' | '
+                        if(parameter_time=="week"):
+                            report_title = 'Week Report | '
+                        else:
+                            report_title = 'Weekend Report | '
+                        report_title = report_title + report + ' | '
                         report_title = report_title + msg_date_from.strftime("%b %d %Y")
                         report_title = report_title + ' - '
                         report_title = report_title + msg_date_to.strftime("%b %d %Y")
@@ -530,7 +558,11 @@ def generate_report(request):
                     dfGeneral.columns = headers
 
                     if not (dfGeneral.iloc[0][1] is None):
-                        report_title = 'Report | '+report + ' | '
+                        if(parameter_time=="week"):
+                            report_title = 'Week Report | '
+                        else:
+                            report_title = 'Weekend Report | '
+                        report_title = report_title + report + ' | '
                         report_title = report_title + msg_date_from.strftime("%b %d %Y")
                         report_title = report_title + ' - '
                         report_title = report_title + msg_date_to.strftime("%b %d %Y")
@@ -574,7 +606,11 @@ def generate_report(request):
                     dfGeneral = pd.DataFrame(Result)
                     dfGeneral.columns = headers
                     if (dfGeneral.empty == False):
-                        report_title = 'Report | '+report + ' | ' + country + ' | ' 
+                        if(parameter_time=="week"):
+                            report_title = 'Week Report | '
+                        else:
+                            report_title = 'Weekend Report | '
+                        report_title = report_title + report + ' | ' + country + ' | ' 
                         report_title = report_title + msg_date_from.strftime("%b %d %Y")
                         report_title = report_title + ' - '
                         report_title = report_title + msg_date_to.strftime("%b %d %Y")
@@ -617,7 +653,11 @@ def generate_report(request):
                     dfGeneral = pd.DataFrame(Result)
                     dfGeneral.columns = headers
                     if (dfGeneral.empty == False):
-                        report_title = 'Report | '+report + ' | ' + country + ' | '
+                        if(parameter_time=="week"):
+                            report_title = 'Week Report | '
+                        else:
+                            report_title = 'Weekend Report | '
+                        report_title = report_title + report + ' | ' + country + ' | '
                         report_title = report_title + msg_date_from.strftime("%b %d %Y")
                         report_title = report_title + ' - '
                         report_title = report_title + msg_date_to.strftime("%b %d %Y")
@@ -661,7 +701,11 @@ def generate_report(request):
                     dfGeneral.columns = headers                   
 
                     if not (dfGeneral.iloc[0][1] is None):
-                        report_title = 'Report | '+report + ' | '
+                        if(parameter_time=="week"):
+                            report_title = 'Week Report | '
+                        else:
+                            report_title = 'Weekend Report | '
+                        report_title = report_title + report + ' | '
                         report_title = report_title + msg_date_from.strftime("%b %d %Y")
                         report_title = report_title + ' - '
                         report_title = report_title + msg_date_to.strftime("%b %d %Y")
@@ -786,7 +830,11 @@ def generate_report(request):
                     dfGeneral['Total Gross ($)'] = dfGeneral['Total Gross ($)'].astype(float)
                     
                     if (dfGeneral.empty == False):
-                        report_title = 'Report | '+report + ' | '
+                        if(parameter_time=="week"):
+                            report_title = 'Week Report | '
+                        else:
+                            report_title = 'Weekend Report | '
+                        report_title = report_title + report + ' | '
                         report_title = report_title + msg_date_from.strftime("%b %d %Y")
                         report_title = report_title + ' - '
                         report_title = report_title + msg_date_to.strftime("%b %d %Y")
@@ -916,7 +964,11 @@ def generate_report(request):
                     dfGeneral.columns = headers
 
                     if (dfGeneral.empty == False):
-                        report_title = 'Report | '+report + ' | ' + country + ' | ' 
+                        if(parameter_time=="week"):
+                            report_title = 'Week Report | '
+                        else:
+                            report_title = 'Weekend Report | '
+                        report_title = report_title + report + ' | ' + country + ' | ' 
                         report_title = report_title + msg_date_from.strftime("%b %d %Y")
                         report_title = report_title + ' - '
                         report_title = report_title + msg_date_to.strftime("%b %d %Y")
@@ -929,7 +981,6 @@ def generate_report(request):
                         else:
                             query = query.replace('@week_adm','weekend_adm')
                         Share = pd.read_sql_query(query,engine)
-                        print(Share)
                         
                         query = 'SELECT circuit AS Circuit, SUM(@week_adm) AS CircuitAdm FROM core_data cd WHERE cd.country="@country_name" AND title IN (SELECT cd.title AS title FROM core_data cd WHERE cd.country="@country_name" GROUP BY cd.title ORDER BY SUM(cd.@week_adm) DESC LIMIT 5) AND substr(week_from,7)||substr(week_from,4,2)||substr(week_from,1,2) >= "@week_from" AND substr(week_to,7)||substr(week_to,4,2)||substr(week_to,1,2) <= "@week_to" GROUP BY circuit ORDER BY CircuitAdm DESC LIMIT 3'
                         query = query.replace('@week_from',from_date.replace('-',''))
@@ -940,7 +991,6 @@ def generate_report(request):
                         else:
                             query = query.replace('@week_adm','weekend_adm')
                         TopShare = pd.read_sql_query(query,engine)
-                        print(TopShare)
 
                         topCircuits = []
                         totalCircuits = []
@@ -1042,10 +1092,13 @@ def generate_report(request):
                     headers = ["Title", "Total Gross ($)"]
                     dfGeneral = pd.DataFrame(Result)
                     dfGeneral.columns = headers
-                    #dfGeneral['Total Gross ($)'] = dfGeneral['Total Gross ($)'].astype(float)
-
+                    
                     if (dfGeneral.empty == False):
-                        report_title = 'Report | '+report + ' | ' + country + ' | ' 
+                        if(parameter_time=="week"):
+                            report_title = 'Week Report | '
+                        else:
+                            report_title = 'Weekend Report | '
+                        report_title = report_title + report + ' | ' + country + ' | '
                         report_title = report_title + msg_date_from.strftime("%b %d %Y")
                         report_title = report_title + ' - '
                         report_title = report_title + msg_date_to.strftime("%b %d %Y")
@@ -1058,7 +1111,6 @@ def generate_report(request):
                         else:
                             query = query.replace('@week_gross','weekend_gross')
                         Share = pd.read_sql_query(query,engine)
-                        print(Share)
                         
                         query = 'SELECT circuit AS Circuit, SUM(@week_gross) AS CircuitAdm FROM core_data cd WHERE cd.country="@country_name" AND title IN (SELECT cd.title AS title FROM core_data cd WHERE cd.country="@country_name" GROUP BY cd.title ORDER BY SUM(cd.@week_gross) DESC LIMIT 5) AND substr(week_from,7)||substr(week_from,4,2)||substr(week_from,1,2) >= "@week_from" AND substr(week_to,7)||substr(week_to,4,2)||substr(week_to,1,2) <= "@week_to" GROUP BY circuit ORDER BY CircuitAdm DESC LIMIT 3'
                         query = query.replace('@week_from',from_date.replace('-',''))
@@ -1069,7 +1121,6 @@ def generate_report(request):
                         else:
                             query = query.replace('@week_gross','weekend_gross')
                         TopShare = pd.read_sql_query(query,engine)
-                        print(TopShare)
 
                         topCircuits = []
                         totalCircuits = []
@@ -1177,7 +1228,11 @@ def generate_report(request):
                     dfGeneral['Total Gross ($)'] = dfGeneral['Total Gross ($)'].astype(float)
                     
                     if (dfGeneral.empty == False):
-                        report_title = 'Report | '+report + ' | '
+                        if(parameter_time=="week"):
+                            report_title = 'Week Report | '
+                        else:
+                            report_title = 'Weekend Report | '
+                        report_title = report_title + report + ' | '
                         report_title = report_title + msg_date_from.strftime("%b %d %Y")
                         report_title = report_title + ' - '
                         report_title = report_title + msg_date_to.strftime("%b %d %Y")
@@ -1292,6 +1347,318 @@ def generate_report(request):
                         msg = msg + msg_date_to.strftime("%b %d %Y")
                         messages.warning(request, msg)
 
+                if (report == "Week vs Weekend - General Admissions"):
+                    query = 'SELECT cd.country AS Country, SUM(week_adm) AS WeekAdm, SUM(weekend_adm) AS WeekendAdm FROM core_data cd WHERE substr(week_from,7)||substr(week_from,4,2)||substr(week_from,1,2) >= "@week_from" AND substr(week_to,7)||substr(week_to,4,2)||substr(week_to,1,2) <= "@week_to" GROUP BY cd.country'
+                    query = query.replace('@week_from',from_date.replace('-',''))
+                    query = query.replace('@week_to', to_date.replace('-',''))
+                    Result = pd.read_sql_query(query,engine)
+                    headers = ["Country", "Week Admissions", "Weekend Admissions"]
+                    dfGeneral = pd.DataFrame(Result)
+                    dfGeneral.columns = headers
+
+                    if not (dfGeneral.iloc[0][1] is None):
+                        report_title = 'Report | ' + report + ' | '
+                        report_title = report_title + msg_date_from.strftime("%b %d %Y")
+                        report_title = report_title + ' - '
+                        report_title = report_title + msg_date_to.strftime("%b %d %Y")
+                        dfGeneral['Week Admissions'] = dfGeneral['Week Admissions'].astype(int)
+                        dfGeneral['Weekend Admissions'] = dfGeneral['Weekend Admissions'].astype(int)
+                        week_adm_sum = dfGeneral['Week Admissions'].sum()                        
+                        weekend_adm_sum = dfGeneral['Weekend Admissions'].sum()
+
+                        data = ["0.00","0.00","0.00","0.00","0.00","0.00"]
+                        dfGeneral.insert(2, column='SHR% [1]', value=data)
+                        dfGeneral.insert(4, column='SHR% [2]', value=data)
+
+                        for index, row in dfGeneral.iterrows():
+                            if (float(dfGeneral.iloc[index]['Week Admissions']))>0.00:
+                                week_adm1 = round((dfGeneral.iloc[index]['Week Admissions']/week_adm_sum)*100,2)
+                                dfGeneral.at[index,'SHR% [1]'] = week_adm1
+                            else:
+                                dfGeneral.at[index,'SHR% [1]'] = 0.00
+
+                            if (float(dfGeneral.iloc[index]['Weekend Admissions']))>0.00:
+                                week_adm1 = round((dfGeneral.iloc[index]['Weekend Admissions']/weekend_adm_sum)*100,2)
+                                dfGeneral.at[index,'SHR% [2]'] = week_adm1
+                            else:
+                                dfGeneral.at[index,'SHR% [2]'] = 0.00
+
+                        dfGeneral['Week Admissions'] = dfGeneral.apply(lambda x: "{:,}".format(x['Week Admissions']), axis=1)
+                        dfGeneral['Weekend Admissions'] = dfGeneral.apply(lambda x: "{:,}".format(x['Weekend Admissions']), axis=1)
+                        dfGeneral['SHR% [1]'] = dfGeneral['SHR% [1]'].astype(float)
+                        dfGeneral['SHR% [2]'] = dfGeneral['SHR% [2]'].astype(float)
+
+                        shr1_sum = round(dfGeneral['SHR% [1]'].sum(),0)
+                        shr2_sum = round(dfGeneral['SHR% [2]'].sum(),0)
+                        dfGeneral.loc[len(dfGeneral.index)] = ['Total','-t'+str(week_adm_sum),'-t'+str(shr1_sum),'-t'+str(weekend_adm_sum),'-t'+str(shr2_sum)]
+
+                    else:
+                        dfGeneral = pd.DataFrame()
+                        msg = 'No Records between '+ msg_date_from.strftime("%b %d %Y")
+                        msg = msg + ' and ' 
+                        msg = msg + msg_date_to.strftime("%b %d %Y")
+                        messages.warning(request, msg)
+
+                if (report == "Week vs Weekend - General Gross"):
+                    query = 'SELECT cd.country AS Country, SUM(week_gross) AS WeekAdm, SUM(weekend_gross) AS WeekendAdm FROM core_data cd WHERE substr(week_from,7)||substr(week_from,4,2)||substr(week_from,1,2) >= "@week_from" AND substr(week_to,7)||substr(week_to,4,2)||substr(week_to,1,2) <= "@week_to" GROUP BY cd.country'
+                    query = query.replace('@week_from',from_date.replace('-',''))
+                    query = query.replace('@week_to', to_date.replace('-',''))
+                    Result = pd.read_sql_query(query,engine)
+                    headers = ["Country", "Week Gross ($)", "Weekend Gross ($)"]
+                    dfGeneral = pd.DataFrame(Result)
+                    dfGeneral.columns = headers
+
+                    if not (dfGeneral.iloc[0][1] is None):
+                        report_title = 'Report | ' + report + ' | '
+                        report_title = report_title + msg_date_from.strftime("%b %d %Y")
+                        report_title = report_title + ' - '
+                        report_title = report_title + msg_date_to.strftime("%b %d %Y")
+                        dfGeneral['Week Gross ($)'] = dfGeneral['Week Gross ($)'].astype(float)
+                        dfGeneral['Weekend Gross ($)'] = dfGeneral['Weekend Gross ($)'].astype(float)
+                        week_gross_sum = dfGeneral['Week Gross ($)'].sum()                       
+                        weekend_gross_sum = dfGeneral['Weekend Gross ($)'].sum()
+
+                        data = ["0.00","0.00","0.00","0.00","0.00","0.00"]
+                        dfGeneral.insert(2, column='SHR% [1]', value=data)
+                        dfGeneral.insert(4, column='SHR% [2]', value=data)
+
+                        for index, row in dfGeneral.iterrows():
+                            if (float(dfGeneral.iloc[index]['Week Gross ($)']))>0.00:
+                                week_gross1 = round((dfGeneral.iloc[index]['Week Gross ($)']/week_gross_sum)*100,2)
+                                dfGeneral.at[index,'SHR% [1]'] = week_gross1
+                            else:
+                                dfGeneral.at[index,'SHR% [1]'] = 0.00
+
+                            if (float(dfGeneral.iloc[index]['Weekend Gross ($)']))>0.00:
+                                week_gross1 = round((dfGeneral.iloc[index]['Weekend Gross ($)']/weekend_gross_sum)*100,2)
+                                dfGeneral.at[index,'SHR% [2]'] = week_gross1
+                            else:
+                                dfGeneral.at[index,'SHR% [2]'] = 0.00
+
+                        dfGeneral['Week Gross ($)'] = dfGeneral.apply(lambda x: "${:,.2f}".format(x['Week Gross ($)']), axis=1)
+                        dfGeneral['Weekend Gross ($)'] = dfGeneral.apply(lambda x: "${:,.2f}".format(x['Weekend Gross ($)']), axis=1)
+                        dfGeneral['SHR% [1]'] = dfGeneral['SHR% [1]'].astype(float)
+                        dfGeneral['SHR% [2]'] = dfGeneral['SHR% [2]'].astype(float)
+
+                        shr1_sum = round(dfGeneral['SHR% [1]'].sum(),0)
+                        shr2_sum = round(dfGeneral['SHR% [2]'].sum(),0)
+                        dfGeneral.loc[len(dfGeneral.index)] = ['Total','-t$'+str(round(week_gross_sum,2)),'-t'+str(shr1_sum),'-t$'+str(round(weekend_gross_sum,2)),'-t'+str(shr2_sum)]
+
+                    else:
+                        dfGeneral = pd.DataFrame()
+                        msg = 'No Records between '+ msg_date_from.strftime("%b %d %Y")
+                        msg = msg + ' and ' 
+                        msg = msg + msg_date_to.strftime("%b %d %Y")
+                        messages.warning(request, msg)
+
+                if (report == "Week vs Weekend - Top 5 Movies Admissions"):
+                    query = 'SELECT cd.title AS Title, SUM(week_adm) AS WeekAdm, SUM(weekend_adm) AS WeekendAdm FROM core_data cd WHERE substr(week_from,7)||substr(week_from,4,2)||substr(week_from,1,2) >= "@week_from" AND substr(week_to,7)||substr(week_to,4,2)||substr(week_to,1,2) <= "@week_to" GROUP BY cd.title ORDER BY SUM(week_adm) DESC LIMIT 5'
+                    query = query.replace('@week_from',from_date.replace('-',''))
+                    query = query.replace('@week_to', to_date.replace('-',''))
+                    Result = pd.read_sql_query(query,engine)
+                    headers = ["Title", "Week Admissions", "Weekend Admissions"]
+                    dfGeneral = pd.DataFrame(Result)
+                    dfGeneral.columns = headers
+
+                    if not (dfGeneral.iloc[0][1] is None):
+                        report_title = 'Report | ' + report + ' | '
+                        report_title = report_title + msg_date_from.strftime("%b %d %Y")
+                        report_title = report_title + ' - '
+                        report_title = report_title + msg_date_to.strftime("%b %d %Y")
+                        dfGeneral['Week Admissions'] = dfGeneral['Week Admissions'].astype(int)
+                        dfGeneral['Weekend Admissions'] = dfGeneral['Weekend Admissions'].astype(int)
+                        week_adm_sum = dfGeneral['Week Admissions'].sum()                        
+                        weekend_adm_sum = dfGeneral['Weekend Admissions'].sum()
+
+                        data = ["0.00","0.00","0.00","0.00","0.00"]
+                        dfGeneral.insert(2, column='SHR% [1]', value=data)
+                        dfGeneral.insert(4, column='SHR% [2]', value=data)
+
+                        for index, row in dfGeneral.iterrows():
+                            if (float(dfGeneral.iloc[index]['Week Admissions']))>0.00:
+                                week_adm1 = round((dfGeneral.iloc[index]['Week Admissions']/week_adm_sum)*100,2)
+                                dfGeneral.at[index,'SHR% [1]'] = week_adm1
+                            else:
+                                dfGeneral.at[index,'SHR% [1]'] = 0.00
+
+                            if (float(dfGeneral.iloc[index]['Weekend Admissions']))>0.00:
+                                week_adm1 = round((dfGeneral.iloc[index]['Weekend Admissions']/weekend_adm_sum)*100,2)
+                                dfGeneral.at[index,'SHR% [2]'] = week_adm1
+                            else:
+                                dfGeneral.at[index,'SHR% [2]'] = 0.00
+
+                        dfGeneral['Week Admissions'] = dfGeneral.apply(lambda x: "{:,}".format(x['Week Admissions']), axis=1)
+                        dfGeneral['Weekend Admissions'] = dfGeneral.apply(lambda x: "{:,}".format(x['Weekend Admissions']), axis=1)
+                        dfGeneral['SHR% [1]'] = dfGeneral['SHR% [1]'].astype(float)
+                        dfGeneral['SHR% [2]'] = dfGeneral['SHR% [2]'].astype(float)
+
+                        shr1_sum = round(dfGeneral['SHR% [1]'].sum(),0)
+                        shr2_sum = round(dfGeneral['SHR% [2]'].sum(),0)
+                        dfGeneral.loc[len(dfGeneral.index)] = ['Total','-t'+str(week_adm_sum),'-t'+str(shr1_sum),'-t'+str(weekend_adm_sum),'-t'+str(shr2_sum)]
+
+                    else:
+                        dfGeneral = pd.DataFrame()
+                        msg = 'No Records between '+ msg_date_from.strftime("%b %d %Y")
+                        msg = msg + ' and ' 
+                        msg = msg + msg_date_to.strftime("%b %d %Y")
+                        messages.warning(request, msg)
+
+                if (report == "Week vs Weekend - Top 5 Movies Gross"):
+                    query = 'SELECT cd.title AS Title, SUM(week_gross) AS WeekAdm, SUM(weekend_gross) AS WeekendAdm FROM core_data cd WHERE substr(week_from,7)||substr(week_from,4,2)||substr(week_from,1,2) >= "@week_from" AND substr(week_to,7)||substr(week_to,4,2)||substr(week_to,1,2) <= "@week_to" GROUP BY cd.title ORDER BY SUM(week_gross) DESC LIMIT 5'
+                    query = query.replace('@week_from',from_date.replace('-',''))
+                    query = query.replace('@week_to', to_date.replace('-',''))
+                    Result = pd.read_sql_query(query,engine)
+                    headers = ["Title", "Weekend Gross ($)", "Weekend Admissions"]
+                    dfGeneral = pd.DataFrame(Result)
+                    dfGeneral.columns = headers
+
+                    if not (dfGeneral.iloc[0][1] is None):
+                        report_title = 'Report | ' + report + ' | '
+                        report_title = report_title + msg_date_from.strftime("%b %d %Y")
+                        report_title = report_title + ' - '
+                        report_title = report_title + msg_date_to.strftime("%b %d %Y")
+                        dfGeneral['Weekend Gross ($)'] = dfGeneral['Weekend Gross ($)'].astype(float)
+                        dfGeneral['Weekend Admissions'] = dfGeneral['Weekend Admissions'].astype(float)
+                        week_gross_sum = dfGeneral['Weekend Gross ($)'].sum()                        
+                        weekend_gross_sum = dfGeneral['Weekend Admissions'].sum()
+
+                        data = ["0.00","0.00","0.00","0.00","0.00"]
+                        dfGeneral.insert(2, column='SHR% [1]', value=data)
+                        dfGeneral.insert(4, column='SHR% [2]', value=data)
+
+                        for index, row in dfGeneral.iterrows():
+                            if (float(dfGeneral.iloc[index]['Weekend Gross ($)']))>0.00:
+                                week_gross1 = round((dfGeneral.iloc[index]['Weekend Gross ($)']/week_gross_sum)*100,2)
+                                dfGeneral.at[index,'SHR% [1]'] = week_gross1
+                            else:
+                                dfGeneral.at[index,'SHR% [1]'] = 0.00
+
+                            if (float(dfGeneral.iloc[index]['Weekend Admissions']))>0.00:
+                                week_gross1 = round((dfGeneral.iloc[index]['Weekend Admissions']/weekend_gross_sum)*100,2)
+                                dfGeneral.at[index,'SHR% [2]'] = week_gross1
+                            else:
+                                dfGeneral.at[index,'SHR% [2]'] = 0.00
+
+                        dfGeneral['Weekend Gross ($)'] = dfGeneral.apply(lambda x: "${:,.2f}".format(x['Weekend Gross ($)']), axis=1)
+                        dfGeneral['Weekend Admissions'] = dfGeneral.apply(lambda x: "${:,.2f}".format(x['Weekend Admissions']), axis=1)
+                        dfGeneral['SHR% [1]'] = dfGeneral['SHR% [1]'].astype(float)
+                        dfGeneral['SHR% [2]'] = dfGeneral['SHR% [2]'].astype(float)
+
+                        shr1_sum = round(dfGeneral['SHR% [1]'].sum(),0)
+                        shr2_sum = round(dfGeneral['SHR% [2]'].sum(),0)
+                        dfGeneral.loc[len(dfGeneral.index)] = ['Total','-t$'+str(round(week_gross_sum,2)),'-t'+str(shr1_sum),'-t$'+str(round(weekend_gross_sum,2)),'-t'+str(shr2_sum)]
+
+                    else:
+                        dfGeneral = pd.DataFrame()
+                        msg = 'No Records between '+ msg_date_from.strftime("%b %d %Y")
+                        msg = msg + ' and ' 
+                        msg = msg + msg_date_to.strftime("%b %d %Y")
+                        messages.warning(request, msg)
+
+                if (report == "Week vs Weekend - Circuit Admissions"):
+                    query = 'SELECT cd.circuit AS Circuit, SUM(week_adm) AS WeekAdm, SUM(weekend_adm) AS WeekendAdm FROM core_data cd WHERE substr(week_from,7)||substr(week_from,4,2)||substr(week_from,1,2) >= "@week_from" AND substr(week_to,7)||substr(week_to,4,2)||substr(week_to,1,2) <= "@week_to" GROUP BY cd.circuit ORDER BY SUM(week_adm) DESC'
+                    query = query.replace('@week_from',from_date.replace('-',''))
+                    query = query.replace('@week_to', to_date.replace('-',''))
+                    Result = pd.read_sql_query(query,engine)
+                    headers = ["Circuit", "Week Admissions", "Weekend Admissions"]
+                    dfGeneral = pd.DataFrame(Result)
+                    dfGeneral.columns = headers
+
+                    if not (dfGeneral.iloc[0][1] is None):
+                        report_title = 'Report | ' + report + ' | '
+                        report_title = report_title + msg_date_from.strftime("%b %d %Y")
+                        report_title = report_title + ' - '
+                        report_title = report_title + msg_date_to.strftime("%b %d %Y")
+                        dfGeneral['Week Admissions'] = dfGeneral['Week Admissions'].astype(int)
+                        dfGeneral['Weekend Admissions'] = dfGeneral['Weekend Admissions'].astype(int)
+                        week_adm_sum = dfGeneral['Week Admissions'].sum()                        
+                        weekend_adm_sum = dfGeneral['Weekend Admissions'].sum()
+
+                        data = ["0.00","0.00","0.00","0.00","0.00","0.00","0.00","0.00","0.00","0.00","0.00","0.00","0.00","0.00","0.00","0.00","0.00","0.00","0.00","0.00","0.00","0.00","0.00","0.00","0.00"]
+                        dfGeneral.insert(2, column='SHR% [1]', value=data)
+                        dfGeneral.insert(4, column='SHR% [2]', value=data)
+
+                        for index, row in dfGeneral.iterrows():
+                            if (float(dfGeneral.iloc[index]['Week Admissions']))>0.00:
+                                week_adm1 = round((dfGeneral.iloc[index]['Week Admissions']/week_adm_sum)*100,2)
+                                dfGeneral.at[index,'SHR% [1]'] = week_adm1
+                            else:
+                                dfGeneral.at[index,'SHR% [1]'] = 0.00
+
+                            if (float(dfGeneral.iloc[index]['Weekend Admissions']))>0.00:
+                                week_adm1 = round((dfGeneral.iloc[index]['Weekend Admissions']/weekend_adm_sum)*100,2)
+                                dfGeneral.at[index,'SHR% [2]'] = week_adm1
+                            else:
+                                dfGeneral.at[index,'SHR% [2]'] = 0.00
+
+                        dfGeneral['Week Admissions'] = dfGeneral.apply(lambda x: "{:,}".format(x['Week Admissions']), axis=1)
+                        dfGeneral['Weekend Admissions'] = dfGeneral.apply(lambda x: "{:,}".format(x['Weekend Admissions']), axis=1)
+                        dfGeneral['SHR% [1]'] = dfGeneral['SHR% [1]'].astype(float)
+                        dfGeneral['SHR% [2]'] = dfGeneral['SHR% [2]'].astype(float)
+
+                        shr1_sum = round(dfGeneral['SHR% [1]'].sum(),0)
+                        shr2_sum = round(dfGeneral['SHR% [2]'].sum(),0)
+                        dfGeneral.loc[len(dfGeneral.index)] = ['Total','-t'+str(week_adm_sum),'-t'+str(shr1_sum),'-t'+str(weekend_adm_sum),'-t'+str(shr2_sum)]
+
+                    else:
+                        dfGeneral = pd.DataFrame()
+                        msg = 'No Records between '+ msg_date_from.strftime("%b %d %Y")
+                        msg = msg + ' and ' 
+                        msg = msg + msg_date_to.strftime("%b %d %Y")
+                        messages.warning(request, msg)
+
+                if (report == "Week vs Weekend - Circuit Gross"):
+                    query = 'SELECT cd.circuit AS Circuit, SUM(week_gross) AS WeekAdm, SUM(weekend_gross) AS WeekendAdm FROM core_data cd WHERE substr(week_from,7)||substr(week_from,4,2)||substr(week_from,1,2) >= "@week_from" AND substr(week_to,7)||substr(week_to,4,2)||substr(week_to,1,2) <= "@week_to" GROUP BY cd.circuit ORDER BY SUM(week_adm) DESC'
+                    query = query.replace('@week_from',from_date.replace('-',''))
+                    query = query.replace('@week_to', to_date.replace('-',''))
+                    Result = pd.read_sql_query(query,engine)
+                    headers = ["Circuit", "Week Gross ($)", "Weekend Gross ($)"]
+                    dfGeneral = pd.DataFrame(Result)
+                    dfGeneral.columns = headers
+
+                    if not (dfGeneral.iloc[0][1] is None):
+                        report_title = 'Report | ' + report + ' | '
+                        report_title = report_title + msg_date_from.strftime("%b %d %Y")
+                        report_title = report_title + ' - '
+                        report_title = report_title + msg_date_to.strftime("%b %d %Y")
+                        dfGeneral['Week Gross ($)'] = dfGeneral['Week Gross ($)'].astype(float)
+                        dfGeneral['Weekend Gross ($)'] = dfGeneral['Weekend Gross ($)'].astype(float)
+                        week_gross_sum = dfGeneral['Week Gross ($)'].sum()                       
+                        weekend_gross_sum = dfGeneral['Weekend Gross ($)'].sum()
+
+                        data = ["0.00","0.00","0.00","0.00","0.00","0.00","0.00","0.00","0.00","0.00","0.00","0.00","0.00","0.00","0.00","0.00","0.00","0.00","0.00","0.00","0.00","0.00","0.00","0.00","0.00"]
+                        dfGeneral.insert(2, column='SHR% [1]', value=data)
+                        dfGeneral.insert(4, column='SHR% [2]', value=data)
+
+                        for index, row in dfGeneral.iterrows():
+                            if (float(dfGeneral.iloc[index]['Week Gross ($)']))>0.00:
+                                week_gross1 = round((dfGeneral.iloc[index]['Week Gross ($)']/week_gross_sum)*100,2)
+                                dfGeneral.at[index,'SHR% [1]'] = week_gross1
+                            else:
+                                dfGeneral.at[index,'SHR% [1]'] = 0.00
+
+                            if (float(dfGeneral.iloc[index]['Weekend Gross ($)']))>0.00:
+                                week_gross1 = round((dfGeneral.iloc[index]['Weekend Gross ($)']/weekend_gross_sum)*100,2)
+                                dfGeneral.at[index,'SHR% [2]'] = week_gross1
+                            else:
+                                dfGeneral.at[index,'SHR% [2]'] = 0.00
+
+                        dfGeneral['Week Gross ($)'] = dfGeneral.apply(lambda x: "${:,.2f}".format(x['Week Gross ($)']), axis=1)
+                        dfGeneral['Weekend Gross ($)'] = dfGeneral.apply(lambda x: "${:,.2f}".format(x['Weekend Gross ($)']), axis=1)
+                        dfGeneral['SHR% [1]'] = dfGeneral['SHR% [1]'].astype(float)
+                        dfGeneral['SHR% [2]'] = dfGeneral['SHR% [2]'].astype(float)
+
+                        shr1_sum = round(dfGeneral['SHR% [1]'].sum(),0)
+                        shr2_sum = round(dfGeneral['SHR% [2]'].sum(),0)
+                        dfGeneral.loc[len(dfGeneral.index)] = ['Total','-t$'+str(round(week_gross_sum,2)),'-t'+str(shr1_sum),'-t$'+str(round(weekend_gross_sum,2)),'-t'+str(shr2_sum)]
+
+                    else:
+                        dfGeneral = pd.DataFrame()
+                        msg = 'No Records between '+ msg_date_from.strftime("%b %d %Y")
+                        msg = msg + ' and ' 
+                        msg = msg + msg_date_to.strftime("%b %d %Y")
+                        messages.warning(request, msg)
+
                 table_title = 'text-center">'+'\n<h5 style="margin-bottom: 20px; text-align: center;">'
                 table_title = table_title + report_title
                 table_title = table_title + '</h5>'
@@ -1306,6 +1673,7 @@ def generate_report(request):
                 df_clean = df_clean.replace('<td>Ranking</td>','<td bgcolor= "black" style="color:white; font-weight: bold"></td>')
                 df_clean = df_clean.replace('<td>Total Top 5</td>\n      <td>','<td bgcolor= "#708090" style="color:white; font-weight: bold">Total Top 5</td>\n      <td bgcolor= "#708090" style="color:white; font-weight: bold">')
                 df_clean = df_clean.replace('<td>Total</td>\n      <td>','<td bgcolor= "black" style="color:white; font-weight: bold">Total</td>\n      <td bgcolor= "black" style="color:white; font-weight: bold">')
+                df_clean = df_clean.replace('<td>Total</td>','<td bgcolor= "black" style="color:white; font-weight: bold">Total</td>')
                 df_clean = df_clean.replace('text-center">',table_title)
             else:
                 messages.error(request, "Date Fields Required")
