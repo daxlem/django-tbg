@@ -848,7 +848,7 @@ def generate_report(request):
                             query = query.replace('@week_gross','weekend_gross')
                         Share = pd.read_sql_query(query,engine)
                         
-                        query = 'SELECT circuit AS Circuit, SUM(@week_gross) AS CircuitAdm FROM core_data cd WHERE title IN (SELECT cd.title AS title FROM core_data cd GROUP BY cd.title ORDER BY SUM(cd.@week_gross) DESC LIMIT 5) AND substr(week_from,7)||substr(week_from,4,2)||substr(week_from,1,2) >= "@week_from" AND substr(week_to,7)||substr(week_to,4,2)||substr(week_to,1,2) <= "@week_to" GROUP BY circuit ORDER BY CircuitAdm DESC LIMIT 3'
+                        query = 'SELECT circuit AS Circuit, SUM(@week_gross) AS CircuitAdm FROM core_data cd WHERE title IN (SELECT cd.title AS title FROM core_data cd WHERE substr(week_from,7)||substr(week_from,4,2)||substr(week_from,1,2) >= "@week_from" AND substr(week_to,7)||substr(week_to,4,2)||substr(week_to,1,2) <= "@week_to" GROUP BY cd.title ORDER BY SUM(cd.@week_gross) DESC LIMIT 5) AND substr(week_from,7)||substr(week_from,4,2)||substr(week_from,1,2) >= "@week_from" AND substr(week_to,7)||substr(week_to,4,2)||substr(week_to,1,2) <= "@week_to" GROUP BY circuit ORDER BY CircuitAdm DESC LIMIT 3'
                         query = query.replace('@week_from',from_date.replace('-',''))
                         query = query.replace('@week_to', to_date.replace('-',''))
                         if(parameter_time=="week"):
@@ -972,7 +972,7 @@ def generate_report(request):
                         report_title = report_title + msg_date_from.strftime("%b %d %Y")
                         report_title = report_title + ' - '
                         report_title = report_title + msg_date_to.strftime("%b %d %Y")
-                        query = 'SELECT title AS CircuitTitle, circuit AS Circuit, SUM(@week_adm) AS CircuitAdm FROM core_data cd WHERE cd.country="@country_name" AND title IN (SELECT cd.title AS title FROM core_data cd WHERE cd.country="@country_name" GROUP BY cd.title ORDER BY SUM(cd.@week_adm) DESC LIMIT 5) AND substr(week_from,7)||substr(week_from,4,2)||substr(week_from,1,2) >= "@week_from" AND substr(week_to,7)||substr(week_to,4,2)||substr(week_to,1,2) <= "@week_to" GROUP BY title,circuit ORDER BY CircuitAdm ASC'
+                        query = 'SELECT title AS CircuitTitle, circuit AS Circuit, SUM(@week_adm) AS CircuitAdm FROM core_data cd WHERE cd.country="@country_name" AND title IN (SELECT cd.title AS title FROM core_data cd WHERE cd.country="@country_name" AND substr(week_from,7)||substr(week_from,4,2)||substr(week_from,1,2) >= "@week_from" AND substr(week_to,7)||substr(week_to,4,2)||substr(week_to,1,2) <= "@week_to" GROUP BY cd.title ORDER BY SUM(cd.@week_adm) DESC LIMIT 5) AND substr(week_from,7)||substr(week_from,4,2)||substr(week_from,1,2) >= "@week_from" AND substr(week_to,7)||substr(week_to,4,2)||substr(week_to,1,2) <= "@week_to" GROUP BY title,circuit ORDER BY CircuitAdm ASC'
                         query = query.replace('@week_from',from_date.replace('-',''))
                         query = query.replace('@week_to', to_date.replace('-',''))
                         query = query.replace('@country_name',country)
@@ -982,7 +982,7 @@ def generate_report(request):
                             query = query.replace('@week_adm','weekend_adm')
                         Share = pd.read_sql_query(query,engine)
                         
-                        query = 'SELECT circuit AS Circuit, SUM(@week_adm) AS CircuitAdm FROM core_data cd WHERE cd.country="@country_name" AND title IN (SELECT cd.title AS title FROM core_data cd WHERE cd.country="@country_name" GROUP BY cd.title ORDER BY SUM(cd.@week_adm) DESC LIMIT 5) AND substr(week_from,7)||substr(week_from,4,2)||substr(week_from,1,2) >= "@week_from" AND substr(week_to,7)||substr(week_to,4,2)||substr(week_to,1,2) <= "@week_to" GROUP BY circuit ORDER BY CircuitAdm DESC LIMIT 3'
+                        query = 'SELECT circuit AS Circuit, SUM(@week_adm) AS CircuitAdm FROM core_data cd WHERE cd.country="@country_name" AND title IN (SELECT cd.title AS title FROM core_data cd WHERE cd.country="@country_name" AND substr(week_from,7)||substr(week_from,4,2)||substr(week_from,1,2) >= "@week_from" AND substr(week_to,7)||substr(week_to,4,2)||substr(week_to,1,2) <= "@week_to" GROUP BY cd.title ORDER BY SUM(cd.@week_adm) DESC LIMIT 5) AND substr(week_from,7)||substr(week_from,4,2)||substr(week_from,1,2) >= "@week_from" AND substr(week_to,7)||substr(week_to,4,2)||substr(week_to,1,2) <= "@week_to" GROUP BY circuit ORDER BY CircuitAdm DESC LIMIT 3'
                         query = query.replace('@week_from',from_date.replace('-',''))
                         query = query.replace('@week_to', to_date.replace('-',''))
                         query = query.replace('@country_name',country)
@@ -1112,7 +1112,7 @@ def generate_report(request):
                             query = query.replace('@week_gross','weekend_gross')
                         Share = pd.read_sql_query(query,engine)
                         
-                        query = 'SELECT circuit AS Circuit, SUM(@week_gross) AS CircuitAdm FROM core_data cd WHERE cd.country="@country_name" AND title IN (SELECT cd.title AS title FROM core_data cd WHERE cd.country="@country_name" WHERE substr(week_from,7)||substr(week_from,4,2)||substr(week_from,1,2) >= "@week_from" AND substr(week_to,7)||substr(week_to,4,2)||substr(week_to,1,2) <= "@week_to" GROUP BY cd.title ORDER BY SUM(cd.@week_gross) DESC LIMIT 5) AND substr(week_from,7)||substr(week_from,4,2)||substr(week_from,1,2) >= "@week_from" AND substr(week_to,7)||substr(week_to,4,2)||substr(week_to,1,2) <= "@week_to" GROUP BY circuit ORDER BY CircuitAdm DESC LIMIT 3'
+                        query = 'SELECT circuit AS Circuit, SUM(@week_gross) AS CircuitAdm FROM core_data cd WHERE cd.country="@country_name" AND title IN (SELECT cd.title AS title FROM core_data cd WHERE cd.country="@country_name" AND substr(week_from,7)||substr(week_from,4,2)||substr(week_from,1,2) >= "@week_from" AND substr(week_to,7)||substr(week_to,4,2)||substr(week_to,1,2) <= "@week_to" GROUP BY cd.title ORDER BY SUM(cd.@week_gross) DESC LIMIT 5) AND substr(week_from,7)||substr(week_from,4,2)||substr(week_from,1,2) >= "@week_from" AND substr(week_to,7)||substr(week_to,4,2)||substr(week_to,1,2) <= "@week_to" GROUP BY circuit ORDER BY CircuitAdm DESC LIMIT 3'
                         query = query.replace('@week_from',from_date.replace('-',''))
                         query = query.replace('@week_to', to_date.replace('-',''))
                         query = query.replace('@country_name',country)
