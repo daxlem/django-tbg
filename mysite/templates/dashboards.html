@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+  {% block content_header %}
+    
+      {% csrf_token %}
+      <form method="post" id="formReport" action="{% url 'generate_report'%}" style="margin:20px">
+      {% csrf_token %}
+      <div id="divDashboards">
+        <h2 style="margin-bottom: 5px">Dashboards</h2>
+        <div class="form-row" style="margin:15px">
+          <iframe width="1490" height="634" src="https://app.powerbi.com/reportEmbed?reportId=0bcea628-bd79-4feb-8a48-504b5c4dffec&autoAuth=true&ctid=940b5c19-17a8-4618-8dc8-738ed24df53f&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly93YWJpLXNvdXRoLWNlbnRyYWwtdXMtcmVkaXJlY3QuYW5hbHlzaXMud2luZG93cy5uZXQvIn0%3D" frameborder="0" allowFullScreen="true"></iframe>
+        </div>      
+      </div>
+      </form>
+    {% endblock %}
+    
+  {% endblock %}

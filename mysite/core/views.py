@@ -21,6 +21,9 @@ class Home(TemplateView):
 class Reports(TemplateView):
     template_name = 'reports.html'
 
+class Dashboards(TemplateView):
+    template_name = 'dashboards.html'
+
 def upload_cinema(request):
     context = {}
     files = request.FILES.getlist('csv')

@@ -16,7 +16,7 @@ urlpatterns = [
     path('class/cinema/upload/', views.UploadCinemaView.as_view(), name='class_upload_cinema'),
     path('class/cinema/reports/', views.Reports.as_view(), name='reports'),
     path('class/cinema/reports/process', views.generate_report, name='generate_report'),
-
+    path('class/cinema/dashboards/', views.Dashboards.as_view(), name='dashboards'),
     path('admin/', admin.site.urls),
 ]
 
