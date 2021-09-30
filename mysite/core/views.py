@@ -622,9 +622,10 @@ def generate_report(request):
                         dfGeneral['Total Admissions'] = dfGeneral['Total Admissions'].astype(int)
                         total_sum = dfGeneral['Total Admissions'].sum()
                         dfGeneral.loc[len(dfGeneral.index)] = ['--','Total Top 5', total_sum]
-                        query = 'SELECT "Ranking", "Total", SUM(cd.@week_adm) AS @week_adm FROM core_data cd WHERE substr(week_from,7)||substr(week_from,4,2)||substr(week_from,1,2) >= "@week_from" AND substr(week_to,7)||substr(week_to,4,2)||substr(week_to,1,2) <= "@week_to" LIMIT 1;'
+                        query = 'SELECT "Ranking", "Total", SUM(cd.@week_adm) AS @week_adm FROM core_data cd WHERE cd.country="@country_name" AND substr(week_from,7)||substr(week_from,4,2)||substr(week_from,1,2) >= "@week_from" AND substr(week_to,7)||substr(week_to,4,2)||substr(week_to,1,2) <= "@week_to" LIMIT 1;'
                         query = query.replace('@week_from',from_date.replace('-',''))
                         query = query.replace('@week_to', to_date.replace('-',''))
+                        query = query.replace('@country_name',country)
                         if(parameter_time=="week"):
                             query = query.replace('@week_adm','week_adm')
                         else:
@@ -669,9 +670,10 @@ def generate_report(request):
                         dfGeneral['Total Gross ($)'] = dfGeneral['Total Gross ($)'].astype(float)
                         total_sum = dfGeneral['Total Gross ($)'].sum()
                         dfGeneral.loc[len(dfGeneral.index)] = ['--','Total Top 5', total_sum]
-                        query = 'SELECT "Ranking", "Total", SUM(cd.@week_gross) AS @week_gross FROM core_data cd WHERE substr(week_from,7)||substr(week_from,4,2)||substr(week_from,1,2) >= "@week_from" AND substr(week_to,7)||substr(week_to,4,2)||substr(week_to,1,2) <= "@week_to" LIMIT 1;'
+                        query = 'SELECT "Ranking", "Total", SUM(cd.@week_gross) AS @week_gross FROM core_data cd WHERE cd.country="@country_name" AND substr(week_from,7)||substr(week_from,4,2)||substr(week_from,1,2) >= "@week_from" AND substr(week_to,7)||substr(week_to,4,2)||substr(week_to,1,2) <= "@week_to" LIMIT 1;'
                         query = query.replace('@week_from',from_date.replace('-',''))
                         query = query.replace('@week_to', to_date.replace('-',''))
+                        query = query.replace('@country_name',country)
                         if(parameter_time=="week"):
                             query = query.replace('@week_gross','week_gross')
                         else:
@@ -1052,9 +1054,10 @@ def generate_report(request):
                         total_sum = dfGeneral['Total Admissions'].sum()
                         dfGeneral.loc[len(dfGeneral.index)] = ['--','Total Top 5', total_sum,'--'+str(totalCircuits[0]),'--','--'+str(totalCircuits[1]),'--','--'+str(totalCircuits[2]),'--']
 
-                        query = 'SELECT "Total", SUM(cd.@week_adm) AS CircuitAdm FROM core_data cd WHERE substr(week_from,7)||substr(week_from,4,2)||substr(week_from,1,2) >= "@week_from" AND substr(week_to,7)||substr(week_to,4,2)||substr(week_to,1,2) <= "@week_to" UNION ALL SELECT circuit AS Circuit, SUM(@week_adm) AS CircuitAdm FROM core_data cd WHERE substr(week_from,7)||substr(week_from,4,2)||substr(week_from,1,2) >= "@week_from" AND substr(week_to,7)||substr(week_to,4,2)||substr(week_to,1,2) <= "@week_to" GROUP BY circuit ORDER BY CircuitAdm DESC'
+                        query = 'SELECT "Total", SUM(cd.@week_adm) AS CircuitAdm FROM core_data cd WHERE cd.country="@country_name" AND substr(week_from,7)||substr(week_from,4,2)||substr(week_from,1,2) >= "@week_from" AND substr(week_to,7)||substr(week_to,4,2)||substr(week_to,1,2) <= "@week_to" UNION ALL SELECT circuit AS Circuit, SUM(@week_adm) AS CircuitAdm FROM core_data cd WHERE cd.country="@country_name" AND substr(week_from,7)||substr(week_from,4,2)||substr(week_from,1,2) >= "@week_from" AND substr(week_to,7)||substr(week_to,4,2)||substr(week_to,1,2) <= "@week_to" GROUP BY circuit ORDER BY CircuitAdm DESC'
                         query = query.replace('@week_from',from_date.replace('-',''))
                         query = query.replace('@week_to', to_date.replace('-',''))
+                        query = query.replace('@country_name',country)
                         if(parameter_time=="week"):
                             query = query.replace('@week_adm','week_adm')
                         else:
@@ -1189,9 +1192,10 @@ def generate_report(request):
                         dfGeneral.loc[len(dfGeneral.index)] = ['--','Total Top 5', (round(total_sum,2)),'--$'+str(round(totalCircuits[0],2)),'--','--$'+str(round(totalCircuits[1],2)),'--','--$'+str(round(totalCircuits[2],2)),'--']
                         dfGeneral['Total Gross ($)'] = dfGeneral.apply(lambda x: "${:,.2f}".format(x['Total Gross ($)']), axis=1)
 
-                        query = 'SELECT "Total", SUM(cd.@week_gross) AS CircuitAdm FROM core_data cd WHERE substr(week_from,7)||substr(week_from,4,2)||substr(week_from,1,2) >= "@week_from" AND substr(week_to,7)||substr(week_to,4,2)||substr(week_to,1,2) <= "@week_to" UNION ALL SELECT circuit AS Circuit, SUM(@week_gross) AS CircuitAdm FROM core_data cd WHERE substr(week_from,7)||substr(week_from,4,2)||substr(week_from,1,2) >= "@week_from" AND substr(week_to,7)||substr(week_to,4,2)||substr(week_to,1,2) <= "@week_to" GROUP BY circuit ORDER BY CircuitAdm DESC'
+                        query = 'SELECT "Total", SUM(cd.@week_gross) AS CircuitAdm FROM core_data cd WHERE cd.country="@country_name" AND substr(week_from,7)||substr(week_from,4,2)||substr(week_from,1,2) >= "@week_from" AND substr(week_to,7)||substr(week_to,4,2)||substr(week_to,1,2) <= "@week_to" UNION ALL SELECT circuit AS Circuit, SUM(@week_gross) AS CircuitAdm FROM core_data cd WHERE cd.country="@country_name" AND substr(week_from,7)||substr(week_from,4,2)||substr(week_from,1,2) >= "@week_from" AND substr(week_to,7)||substr(week_to,4,2)||substr(week_to,1,2) <= "@week_to" GROUP BY circuit ORDER BY CircuitAdm DESC'
                         query = query.replace('@week_from',from_date.replace('-',''))
                         query = query.replace('@week_to', to_date.replace('-',''))
+                        query = query.replace('@country_name',country)
                         if(parameter_time=="week"):
                             query = query.replace('@week_gross','week_gross')
                         else:
